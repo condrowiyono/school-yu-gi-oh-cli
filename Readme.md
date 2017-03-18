@@ -7,5 +7,5 @@ Yu-gi-oh Simulator
 # Human
 Tugas Besar
   - Kukuh KR - 
-  - Condro Wiyono - 
-  - M Faisal Aziz - 
+  - Condro Wiyono - 18215042 
+  - M Faisal Aziz -
