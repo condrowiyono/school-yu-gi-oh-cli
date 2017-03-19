@@ -14,7 +14,8 @@ public abstract class Card{
 	private String name, description, pos;
 	private float probability = 0;
 	//konstruktor
-	public Card(String name) {
+	
+        public Card(String name) {
 		this.name = name;
 	}
 	public Card(String name, String description, String pos, float probability) {

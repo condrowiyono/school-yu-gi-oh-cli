@@ -10,11 +10,15 @@ public class GameStateManager {
 	private int currentState;
 	private int previousState;
 	
-	public static final int NUM_STATES = 4;
+	public static final int NUM_STATES = 8;
 	public static final int INTRO = 0;
 	public static final int MENU = 1;
 	public static final int PLAY = 2;
-	public static final int GAMEOVER = 3;
+	public static final int DUELISTLAND = 3;
+        public static final int DUEL = 4;
+        public static final int SHOP = 5;
+        public static final int DECK = 6;
+        public static final int GAMEOVER = 7;
 
 	public GameStateManager() {
 		paused = false;
@@ -28,14 +32,34 @@ public class GameStateManager {
 		previousState = currentState;
 		unloadState(previousState);
 		currentState = i;
-		if(i == INTRO) {
-			gameStates[i] = new IntroState(this);
-			gameStates[i].draw();
-		}
-		else if(i == MENU) {
-			gameStates[i] = new MenuState(this);
-			gameStates[i].draw();
-		} 
+                switch (i) {
+                    case INTRO:
+                        gameStates[i] = new IntroState(this);
+                        gameStates[i].draw();
+                        break;
+                    case MENU:
+                        gameStates[i] = new MenuState(this);
+                        gameStates[i].draw();
+                        break;
+                    case DUELISTLAND:
+                        gameStates[i] = new DuelistLand(this);
+                        gameStates[i].draw();
+                        break; 
+                    case DUEL:
+                        gameStates[i] = new DuelState(this);
+                        gameStates[i].draw();
+                        break; 
+                    case DECK:
+                        gameStates[i] = new DeckState(this);
+                        gameStates[i].draw();
+                        break; 
+                    case SHOP:
+                        gameStates[i] = new ShopState(this);
+                        gameStates[i].draw();
+                        break; 
+                    default:
+                        break;
+                }
 	}
 	
 	public void unloadState(int i) {
@@ -51,29 +75,8 @@ public class GameStateManager {
 			pauseState.draw();
 		}
 		else if(gameStates[currentState] != null) {
-			clearConsole();
+            
 			gameStates[currentState].draw();
 		}
-	}
-	
-	public final static void clearConsole()
-	{
-	    try
-	    {
-	        final String os = System.getProperty("os.name");
-
-	        if (os.contains("Windows"))
-	        {
-	            Runtime.getRuntime().exec("cls");
-	        }
-	        else
-	        {
-	            Runtime.getRuntime().exec("clear");
-	        }
-	    }
-	    catch (final Exception e)
-	    {
-	        //  Handle any exceptions.
-	    }
 	}
 }

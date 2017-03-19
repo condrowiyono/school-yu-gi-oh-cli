@@ -11,17 +11,17 @@ import com.terserah.yugi.Manager.GameStateManager;
  *
  * @author condro
  */
-public class GameOverState extends GameState {
+public class DeckState extends GameState {
 
-    public GameOverState(GameStateManager gsm) {
+    public DeckState(GameStateManager gsm) {
         super(gsm);
     }
 
     @Override
     public void draw() {
-        // TODO Auto-generated method stub
-        System.out.println("Yu Gi Oh Game");
-        handleInput();
+        System.out.println("DECK");
+        //ANOTHER GOES HERE
+        handleInput();    
     }
 
     @Override
