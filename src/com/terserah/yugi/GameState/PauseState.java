@@ -20,7 +20,8 @@ public class PauseState extends GameState {
 		System.out.println("R Resume");
                 System.out.println("S Save");
                 System.out.println("Q Exit");
-                System.out.println("C Card");
+                System.out.println("C Card Deck");
+                System.out.print("Pilihan : ");
 		Scanner in = new Scanner(System.in);
 		String opt;
 		opt = in.nextLine();
@@ -34,7 +35,7 @@ public class PauseState extends GameState {
                     //Save
                     break;
                  case "C":
-                    //CardDeck
+                    gsm.setState(GameStateManager.DECK);
                     break;   
                 default:
                     break;

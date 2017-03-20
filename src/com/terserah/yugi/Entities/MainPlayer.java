@@ -11,17 +11,24 @@ package com.terserah.yugi.Entities;
  */
 public class MainPlayer extends Player{
     private int MONEY;
+    private Deck AllCard;
     
     public MainPlayer(String name) {
         super(name);
         this.MONEY = 2000;
+        this.AllCard = new Deck();
     }
-    
-    public int getMoney() {
-        return this.MONEY;
+
+    public int getMONEY() {
+            return MONEY;
     }
-    public void setMoney(int money) {
-        this.MONEY = money;
+    public void setMONEY(int mONEY) {
+            MONEY = mONEY;
     }
-    
+    public Deck getAllCard() {
+            return AllCard;
+    }
+    public void setAllCard(Deck allCard) {
+            AllCard = allCard;
+    }
 }

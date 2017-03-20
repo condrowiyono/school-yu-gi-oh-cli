@@ -76,5 +76,39 @@ public class Deck {
     public Card get(int index){
         return deck.get(index);
     }
+    
+    public Card getbyName(String name) {
+        boolean flag = false;
+        int idx = 0;
+        for (int i = 0; i < deck.size(); i++) {
+            if (name.equals(deck.get(i).getName())) {
+                flag = true;
+                idx = i;
+            }
+        }
+        if (flag) {
+            return deck.get(idx);
+        } else {
+            return null;
+        }
+    }
+    public void delete(Card c) {
+        deck.remove(c);
+    }
+    public Card getBySlug(String slug) {
+        boolean flag = false;
+        int idx = 0;
+        for (int i = 0; i < deck.size(); i++) {
+            if (slug.equals(deck.get(i).getName().replaceAll(" ", "").toLowerCase())) {
+                flag = true;
+                idx = i;
+            }
+        }
+        if (flag) {
+            return deck.get(idx);
+        } else {
+            return null;
+        }
+    }
 }
 

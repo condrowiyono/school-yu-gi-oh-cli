@@ -5,16 +5,20 @@
  */
 package com.terserah.yugi.Entities;
 
+import java.util.*;
 /**
  *
  * @author condro
  */
 public class Duelist extends Player{
     private String RANK;
+    private Deck deck;
    
-    public Duelist(String name, int x, int y, String rank) {
+    public Duelist(String name, int x, int y, String rank, Deck initDeck) {
         super(name,x,y);
         this.RANK = rank;
+        this.deck = initDeck;
+        
     }
     
     public String getRank() {

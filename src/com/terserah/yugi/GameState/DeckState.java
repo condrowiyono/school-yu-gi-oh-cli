@@ -5,9 +5,9 @@
  */
 package com.terserah.yugi.GameState;
 
-import com.terserah.yugi.Entities.Card;
+import com.terserah.yugi.Entities.Deck;
+import com.terserah.yugi.Main.GamePanel;
 import com.terserah.yugi.Manager.GameStateManager;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -19,48 +19,83 @@ public class DeckState extends GameState {
     public DeckState(GameStateManager gsm) {
         super(gsm);
     }
-    public void printCard(ArrayList<Card> initialDeck) {
-        int i;
-        int k = 1;
-        for (i = 0; i == initialDeck.size();i++) {
-          System.out.println(k+": "+initialDeck.get(i).getName());
-          k++;
-        }
+    public void printCard(Deck deck) {
+        if (deck.getSize()>0) {
+            int k = 1;
+            for (int i = 0; i < deck.getSize();i++) {
+              System.out.println(deck.get(i).getSlug()+ "\t \t" + deck.get(i).getName());
+              k++;
+            }
+        } else
+            System.out.println("No Card");
     }
-    public ArrayList<Card> setDeck(ArrayList<Card> initialDeck) {
-        ArrayList<Card> deck = new ArrayList<Card>();
-        boolean y = true;
-        System.out.println("Ketik '0' jika sudah selesai membuat deck");
-        int i;
-        System.out.println("Masukkan no kartu yang ingin dimasukkan ke deck ");
-        Scanner in = new Scanner(System.in);
-        int opt;
-        System.out.println("Masukkan no kartu : ");
-        opt = Integer.parseInt(in.nextLine());
-        i = 1;
-        while ((opt == 0) && (i >= 10) && (i <= 15)) {
-            System.out.println("Masukkan no kartu : ");
-            opt = Integer.parseInt(in.nextLine());
-            deck.add(initialDeck.get(opt));   
-            i++;
-        }
-        return deck;
+    
+    public boolean cekCard(String slug) {
+        boolean flag = false;
+        
+        for (int i = 0; i< GamePanel.PemainUtama.getAllCard().getSize();i++)
+            if (slug.equals(GamePanel.PemainUtama.getAllCard().get(i).getSlug()))
+                flag = true;
+        return flag;
     }
+    
     @Override
     public void draw() {
-        System.out.println("DECK");
-        //ANOTHER GOES HERE
+        System.out.println("\n");
+        System.out.println("Command");
+        System.out.println("list All");
+        System.out.println("list Deck");
+        System.out.println("add id");
+        System.out.println("remove id");
+        System.out.println("exit");
         handleInput();    
     }
 
     @Override
     public void handleInput() {
-        
+            System.out.print("Pilihan : ");
+            Scanner in = new Scanner(System.in);
+            String opt;
+            opt = in.nextLine();
+            //System.out.println(cekCard("fissure"));
+            String[] arrOpt ;
+            arrOpt = opt.split(" ");
+            //for (int i = 0; i<arrOpt.length;i++)
+            //    System.out.println(arrOpt[i]);
+            
+            
+            if (null != arrOpt[0]) switch (arrOpt[0]) {
+            case "list":
+                if ("All".equals(arrOpt[1])) {
+                    printCard(GamePanel.PemainUtama.getAllCard());
+                } else if ("Deck".equals(arrOpt[1])) {
+                    printCard(GamePanel.PemainUtama.getDeck());
+                }
+                break;
+            case "add":
+                if (cekCard(arrOpt[1])) {
+                    GamePanel.PemainUtama.getDeck().addToBottom(ShopState.allCard.getBySlug(arrOpt[1]));
+                   
+                } else {
+                    System.out.println("Not Found");
+                }
+                break;
+            case "remove":
+                if (cekCard(arrOpt[1])) {
+                    GamePanel.PemainUtama.getDeck().delete(ShopState.allCard.getBySlug(arrOpt[1]));
+                   
+                } else {
+                    System.out.println("Not Found");
+                }
+                break; 
+            case "exit" :
+                gsm.setState(GameStateManager.MENU);
+                break;
+            default:
+                break;
+        } 
+            
+            
     }
-    
-    public void handleInput (ArrayList<Card> initialDeck) {
-        System.out.println("Kartu yang anda miliki :");
-        printCard(initialDeck);
-        ArrayList<Card> card = setDeck(initialDeck);
-    }
+
 }

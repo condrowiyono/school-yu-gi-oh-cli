@@ -25,7 +25,7 @@ public class IntroState extends GameState {
                 System.out.println("N New Game");
                 System.out.println("L Load Game");
                 System.out.println("E Exit");
-                
+                System.out.print("Pilihan : ");
 		Scanner in = new Scanner(System.in);
 		String opt;
 		opt = in.nextLine();
@@ -35,6 +35,8 @@ public class IntroState extends GameState {
                         String name;
                         name = in.nextLine();
                         GamePanel.createPlayer(name);
+                        GamePanel.PemainUtama.getAllCard().addToBottom(ShopState.allCard.getBySlug("fissure"));
+                        GamePanel.PemainUtama.getAllCard().addToBottom(ShopState.allCard.getBySlug("traphole"));
                         gsm.setState(GameStateManager.MENU);
                         break;
                     case "L":

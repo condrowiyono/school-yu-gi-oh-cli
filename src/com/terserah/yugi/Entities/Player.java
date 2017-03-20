@@ -20,11 +20,13 @@ public class Player {
        this.NAME = name;
        Point newPos = new Point(5,5);
        this.POSISI = newPos;
+       this.PLAYERDECK = new Deck();
    }
    
    public Player(String name, int x, int y) {
        this.NAME = name;
        Point newPos = new Point(x,y);
+       this.PLAYERDECK = new Deck();
        this.POSISI = newPos;
    }
    
@@ -40,5 +42,8 @@ public class Player {
        this.POSISI.setX(x);
        this.POSISI.setY(y);
    }
-
+   
+   public Deck getDeck() {
+       return this.PLAYERDECK;
+   }
 }
