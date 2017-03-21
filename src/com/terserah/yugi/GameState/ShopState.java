@@ -36,11 +36,12 @@ public class ShopState extends GameState {
         handleInput();
     }
 
-    public void printCard(Deck initialDeck) {
+    public void printCard(Deck deck) {
         int i;
         int k = 1;
-        for (i = 0; i < initialDeck.getSize();i++) {
-          System.out.println(k+": "+initialDeck.get(i).getName());
+        Deck monster = deck.getbyJenis("Monster");
+        for (i = 0; i < monster.getSize();i++) {
+          System.out.println(k+": " +monster.get(i).getJenis()+ ": "+monster.get(i).getName());
           k++;
         }
     }
@@ -56,6 +57,7 @@ public class ShopState extends GameState {
             opt = in.nextLine();
             switch (opt) {
                 case "1":
+                case "iya" :
                     int z;
                     for (z =1; z <=3; z++){
                         Random rand = new Random();
@@ -128,6 +130,7 @@ public class ShopState extends GameState {
                     }
                     
                 case "0":
+                case "tidak":
                     GamePanel.getMainPlayer().setPosisi(GamePanel.getMainPlayer().getPosisi().getX(),GamePanel.getMainPlayer().getPosisi().getY()+1);
                     gsm.setState(GameStateManager.DUELISTLAND);
                     break;

@@ -61,5 +61,6 @@ public abstract class Card{
 	public String getSlug() {
 		return this.slug;
 	}
+        public abstract String getJenis() ;
 }
 

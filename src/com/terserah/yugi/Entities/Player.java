@@ -15,7 +15,7 @@ public class Player {
    private String NAME;
    private Deck PLAYERDECK;
    private Point POSISI;
-   
+
    public Player(String name) {
        this.NAME = name;
        Point newPos = new Point(5,5);
@@ -28,6 +28,13 @@ public class Player {
        Point newPos = new Point(x,y);
        this.PLAYERDECK = new Deck();
        this.POSISI = newPos;
+   }
+   public Player(String name, int x, int y, Deck deck) {
+       this.NAME = name;
+       Point newPos = new Point(x,y);
+       this.PLAYERDECK = new Deck();
+       this.POSISI = newPos;
+       this.PLAYERDECK = deck;
    }
    
    public String getName() {

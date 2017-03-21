@@ -53,6 +53,11 @@ public class Spell extends Card{
 		this.setPosition("Other");
 		this.setPos("Graveyard");
 	}
+
+    @Override
+    public String getJenis() {
+        return this.getClass().getSimpleName();
+    }
 	
 }
 

@@ -2,6 +2,7 @@ package com.terserah.yugi.GameState;
 
 import java.util.Scanner;
 import com.terserah.yugi.Manager.GameStateManager;
+import com.terserah.yugi.Manager.JSONManager;
 
 public class PauseState extends GameState {
 	
@@ -19,6 +20,7 @@ public class PauseState extends GameState {
 		// TODO Auto-generated method stub
 		System.out.println("R Resume");
                 System.out.println("S Save");
+                System.out.println("M Save Manager");
                 System.out.println("Q Exit");
                 System.out.println("C Card Deck");
                 System.out.print("Pilihan : ");
@@ -32,8 +34,11 @@ public class PauseState extends GameState {
                 case "Q":
                     System.exit(0);
                 case "S":
-                    //Save
+                    JSONManager.exportPlayer();
                     break;
+                case "M" :
+                    gsm.setState(GameStateManager.SAVEMANAGER);
+                    break;   
                  case "C":
                     gsm.setState(GameStateManager.DECK);
                     break;   

@@ -10,10 +10,11 @@ public class Game {
                 JSONManager.importDuelist();
                 JSONManager.exportCard();
                 JSONManager.importCard();
+                JSONManager.loadPlayer();
                 //Start the game
 		GamePanel a = new GamePanel();
                 //JSONManager.exportDuelist();
-                //JSONManager.exportPlayer();
+                
                 
         }
 	

@@ -10,7 +10,7 @@ public class GameStateManager {
 	private int currentState;
 	private int previousState;
 	
-	public static final int NUM_STATES = 8;
+	public static final int NUM_STATES = 10;
 	public static final int INTRO = 0;
 	public static final int MENU = 1;
 	public static final int PLAY = 2;
@@ -19,6 +19,8 @@ public class GameStateManager {
         public static final int SHOP = 5;
         public static final int DECK = 6;
         public static final int GAMEOVER = 7;
+        public static final int LOAD = 8;
+        public static final int SAVEMANAGER = 9;
 
 	public GameStateManager() {
 		paused = false;
@@ -57,6 +59,14 @@ public class GameStateManager {
                         gameStates[i] = new ShopState(this);
                         gameStates[i].draw();
                         break; 
+                    case LOAD:
+                        gameStates[i] = new LoadState(this);
+                        gameStates[i].draw();
+                        break; 
+                    case SAVEMANAGER:
+                        gameStates[i] = new SaveManagerState(this);
+                        gameStates[i].draw();
+                        break;                         
                     default:
                         break;
                 }

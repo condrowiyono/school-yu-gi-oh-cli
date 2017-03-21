@@ -4,6 +4,7 @@ import com.terserah.yugi.Main.GamePanel;
 import java.util.Scanner;
 
 import com.terserah.yugi.Manager.GameStateManager;
+import com.terserah.yugi.Manager.JSONManager;
 
 public class MenuState extends GameState {
 	
@@ -22,19 +23,21 @@ public class MenuState extends GameState {
 	@Override
 	public void handleInput() {
             // TODO Auto-generated method stub
-            System.out.println("I Info");
-            System.out.println("L DuelistLand / Move Character");
-            System.out.println("P Pause");
-            System.out.println("D Deck");
-            System.out.println("B Back");
-            System.out.println("Q Exit");
+            System.out.println("i info");
+            System.out.println("l land / m move");
+            System.out.println("s save");
+            System.out.println("sm savemanager");
+            System.out.println("d deck");
+            System.out.println("b back");
+            System.out.println("q exit");
             System.out.print("Pilihan : ");
 
             Scanner in = new Scanner(System.in);
             String opt;
             opt = in.nextLine();
             switch (opt) {
-                case "I":
+                case "i":
+                case "info" :
                     System.out.println("Nama = " + GamePanel.getMainPlayer().getName());
                     System.out.println("Money = " + GamePanel.getMainPlayer().getMONEY());
                     System.out.println("Posisi = " + GamePanel.getMainPlayer().getPosisi().getX() + "," + GamePanel.getMainPlayer().getPosisi().getY());
@@ -43,23 +46,31 @@ public class MenuState extends GameState {
                         System.out.println(GamePanel.PemainUtama.getAllCard().get(i).getSlug()
                                             + "\t \t" + GamePanel.PemainUtama.getAllCard().get(i).getName());
                     break;
-                case "P":
-                    gsm.setPaused(true);
+                case "s":
+                case "save":
+                    JSONManager.exportPlayer();
                     break;
-                case "Q":
+                case "q":
+                case "exit" :
                     System.exit(0);
-                case "L":
+                case "l":
+                case "m" :
+                case "move" :
+                case "land" :
                     gsm.setState(GameStateManager.DUELISTLAND);
                     break;
-                case "B":
+                case "b":
+                case "back":
                     gsm.setState(GameStateManager.INTRO);
                     break;
-                case "D":
+                case "d":
+                case "deck":
                     gsm.setState(GameStateManager.DECK);
                     break;
-                 case "C":
-                    //CardDeck
-                    break;   
+                case "sm" :
+                case "savemanager" :
+                    gsm.setState(GameStateManager.SAVEMANAGER);
+                    break;
                 default:
                     break;
             }

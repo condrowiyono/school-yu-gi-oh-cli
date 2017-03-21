@@ -110,5 +110,20 @@ public class Deck {
             return null;
         }
     }
+    public Deck getbyJenis(String jenis) {
+        Deck getDeck = new Deck();
+        int count = 0;
+        while (count<deck.size()) {
+            if (jenis.equals(deck.get(count).getJenis())) {
+                getDeck.addToBottom(deck.get(count));
+            }
+            count++;
+        }
+        if (getDeck == null) {
+            return null;
+        } else {
+            return getDeck;
+        }
+    }
 }
 

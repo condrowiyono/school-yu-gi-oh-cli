@@ -166,6 +166,10 @@ public class Monster extends Card{
 
 	}
         */
+        @Override
+        public String getJenis() {
+            return this.getClass().getSimpleName();
+        }
 }
 
 

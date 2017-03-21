@@ -140,9 +140,4 @@ public class DuelistLand extends GameState {
         int y = GamePanel.PemainUtama.getPosisi().getY();
         return ("D".equals(this.arrMap[x-1][y-1]));     
     }
-    
-    public boolean samakah(Point x, Point y) {
-        return ((x.getX() == y.getX()) && (x.getY() ==y.getY()));
-    }
-    
 }
