@@ -5,12 +5,92 @@
  */
 package com.terserah.yugi.Entities;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author muhfai
  */
-public abstract class Field{
-	private Card[] arena;
+public class Field{
+        private final int maxMonster = 3;
+        private final int maxSpellTrap = 3;
+        
+        private ArrayList<Monster> MONSTER ;
+        private ArrayList<Card> SPELLTRAP ;
+        private ArrayList<Card> GRAVEYARD;
+        private ArrayList<Card> HAND;
+        private Deck DECK;
+        private Phase phase;
+        
+        public Field() {
+            this.MONSTER = new ArrayList<Monster>();
+            this.SPELLTRAP = new ArrayList<Card>();
+            this.HAND = new ArrayList<Card>();
+            this.GRAVEYARD = new ArrayList<Card>();
+            this.DECK = new Deck();
+            this.phase = Phase.MAIN1;
+        }
+        
+        //setter getter
+        public Phase getPhase() {
+            return phase; 
+        }
+        public void setPhase(Phase phase) {
+            this.phase = phase;
+        }
+        public ArrayList<Monster> getMonsterArea() {
+            return MONSTER;
+        }
+        public ArrayList<Card> getSpellTrapArea() {
+            return SPELLTRAP;
+        }
+        public ArrayList<Card> getHand() {
+            return HAND;
+        }
+        public ArrayList<Card> getGraveyard() {
+            return GRAVEYARD;
+        }
+        
+        public Deck getDeck() {
+            return DECK;
+        }
+        
+        public void addMonsterToField(Monster monster, Mode m) {
+            Location  loc = monster.getLoc();
+            if (loc==Location.HAND)
+                HAND.remove(monster);
+            monster.setMode(m);
+            monster.setLoc((Location.FIELD));
+            MONSTER.add(monster);
+        }
+        
+        public void addMonsterToField(Monster monster, Mode m,
+                ArrayList<Monster> tribute) {
+            removeMonsterToGraveyard(tribute);
+            addMonsterToField(monster, m);
+        }
+        
+        private void removeMonsterToGraveyard(ArrayList<Monster> tribute) {
+            for (int i = 0 ; i < MONSTER.size();i++) 
+                removeMonsterToGraveyard(MONSTER.get(i));
+        }
+        
+        private void removeMonsterToGraveyard(Monster monster) {
+            if (MONSTER.contains(monster)) {
+                monster.setLoc(Location.GRAVEYARD);
+                MONSTER.remove(monster);
+                GRAVEYARD.add(monster);
+            }
+        }
+        
+        
+        
+        
+        //tambahkan monster ke field
+        //public void addMonsterToField(Monster monster, )
+        
+	/*
+        private Card[] arena;
 	private int size;
 	
 	public Field(int size) {
@@ -56,5 +136,9 @@ public abstract class Field{
 			this.arena[i] = null;
 		}
 	}
-	
+    */
+
+
+
+
 }

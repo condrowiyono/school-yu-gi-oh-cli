@@ -32,7 +32,6 @@ public class DeckState extends GameState {
     
     public boolean cekCard(String slug) {
         boolean flag = false;
-        
         for (int i = 0; i< GamePanel.PemainUtama.getAllCard().getSize();i++)
             if (slug.equals(GamePanel.PemainUtama.getAllCard().get(i).getSlug()))
                 flag = true;
@@ -47,7 +46,7 @@ public class DeckState extends GameState {
         System.out.println("list Deck");
         System.out.println("add id");
         System.out.println("remove id");
-        System.out.println("exit");
+        System.out.println("save");
         handleInput();    
     }
 
@@ -73,24 +72,24 @@ public class DeckState extends GameState {
                 }
                 break;
             case "add":
-                if (cekCard(arrOpt[1])) {
-                    GamePanel.PemainUtama.getDeck().addToBottom(ShopState.allCard.getBySlug(arrOpt[1]));
-                   
+                if ((cekCard(arrOpt[1]))&&(!GamePanel.PemainUtama.isDoubledCard())) {
+                    GamePanel.PemainUtama.getDeck().addToDeck(ShopState.allCard.getBySlug(arrOpt[1]));
                 } else {
-                    System.out.println("Not Found");
+                    System.out.println("Not Found or card already doubled");
                 }
                 break;
             case "remove":
                 if (cekCard(arrOpt[1])) {
-                    GamePanel.PemainUtama.getDeck().delete(ShopState.allCard.getBySlug(arrOpt[1]));
-                   
+                    GamePanel.PemainUtama.getDeck().delete(ShopState.allCard.getBySlug(arrOpt[1]));    
                 } else {
                     System.out.println("Not Found");
                 }
                 break; 
-            case "exit" :
-                gsm.setState(GameStateManager.MENU);
-                break;
+            case "save" :
+                if (GamePanel.PemainUtama.overDeck()==false) {
+                    gsm.setState(GameStateManager.MENU);
+                    break;
+                }
             default:
                 break;
         } 

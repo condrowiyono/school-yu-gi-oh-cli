@@ -10,13 +10,14 @@ package com.terserah.yugi.Entities;
  * @author muhfai
  */
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Deck {
     ArrayList<Card> deck = new ArrayList<Card>();
     public final static int MAX_DECK_SIZE = 30;
     public final static int MIN_DECK_SIZE = 20;
-    int numCardsRemaining;
+    int numCardsRemaining; 
 
     public Deck(){
         numCardsRemaining = 0;
@@ -30,7 +31,9 @@ public class Deck {
         shuffle();
     }
 
-    public void shuffle(){
+    private void shuffle(){
+        Collections.shuffle(deck);
+        /*
         ArrayList<Card> tempDeck = new ArrayList<Card>();
         Random random = new Random();
         while(deck.size() > 0){
@@ -44,6 +47,7 @@ public class Deck {
             tempDeck.remove(0);
             deck.add(tempCard);
         }
+        */
     }
 
     public Card draw(){
@@ -92,9 +96,11 @@ public class Deck {
             return null;
         }
     }
+    
     public void delete(Card c) {
         deck.remove(c);
     }
+    
     public Card getBySlug(String slug) {
         boolean flag = false;
         int idx = 0;
@@ -110,6 +116,7 @@ public class Deck {
             return null;
         }
     }
+    
     public Deck getbyJenis(String jenis) {
         Deck getDeck = new Deck();
         int count = 0;
@@ -119,11 +126,9 @@ public class Deck {
             }
             count++;
         }
-        if (getDeck == null) {
-            return null;
-        } else {
             return getDeck;
-        }
     }
+    
+
 }
 

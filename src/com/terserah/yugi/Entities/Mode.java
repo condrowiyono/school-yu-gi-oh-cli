@@ -7,13 +7,8 @@ package com.terserah.yugi.Entities;
 
 /**
  *
- * @author muhfai
+ * @author condro
  */
-public class Graveyard extends Field {
-	private static int lastIdxEff = 0;
-	
-	public Graveyard() {
-		
-	}
+public enum Mode {
+	ATTACK,DEFENSE
 }
-

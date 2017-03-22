@@ -21,14 +21,14 @@ public class SaveManagerState extends GameState {
     }
 
     private void printLoadFile() {
-        for (int i = 0; i< JSONManager.semuaPemain.size();i++ )
-            System.out.println(i+ "\t" + JSONManager.semuaPemain.get(i).getName());
+        for (int i = 0; i< GamePanel.semuaPemain.size();i++ )
+            System.out.println(i+ "\t" + GamePanel.semuaPemain.get(i).getName());
     }
     
     private boolean cekLoadFile(String id) {
         boolean flag = false;
         String idx;
-        for (int i = 0; i< JSONManager.semuaPemain.size() ;i++) {
+        for (int i = 0; i< GamePanel.semuaPemain.size() ;i++) {
             idx = Integer.toString(i);
             if (id.equals(idx))
                 flag = true;
@@ -61,9 +61,11 @@ public class SaveManagerState extends GameState {
         case "remove":
             if (cekLoadFile(arrOpt[1])) {
                 int idx= Integer.parseInt(arrOpt[1]);
-                JSONManager.semuaPemain.remove(idx);
+                GamePanel.semuaPemain.remove(idx);
             } else if (("all").equals(arrOpt[1])) {
-                JSONManager.semuaPemain.clear();
+                GamePanel.semuaPemain.clear();
+                gsm.setState(GameStateManager.INTRO);
+                JSONManager.exportPlayer();
             } else
                 System.out.println("Not Found");
             break;

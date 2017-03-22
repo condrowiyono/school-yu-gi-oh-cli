@@ -1,5 +1,6 @@
 package com.terserah.yugi.GameState;
 
+import com.terserah.yugi.Main.Game;
 import com.terserah.yugi.Main.GamePanel;
 import com.terserah.yugi.Manager.GameStateManager;
 import com.terserah.yugi.Manager.JSONManager;
@@ -39,11 +40,7 @@ public class IntroState extends GameState {
                         String name;
                         name = in.nextLine();
                         GamePanel.createPlayer(name);
-                        GamePanel.PemainUtama.getAllCard().addToBottom(ShopState.allCard.getBySlug("fissure"));
-                        GamePanel.PemainUtama.getAllCard().addToBottom(ShopState.allCard.getBySlug("traphole"));
-                        
-                        JSONManager.semuaPemain.add(GamePanel.PemainUtama);
-                        
+                        GamePanel.semuaPemain.add(GamePanel.PemainUtama);
                         gsm.setState(GameStateManager.MENU);
                         break;
                     case "load" :

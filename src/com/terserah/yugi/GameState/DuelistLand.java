@@ -6,7 +6,6 @@
 package com.terserah.yugi.GameState;
 
 import com.terserah.yugi.Entities.Duelist;
-import com.terserah.yugi.Entities.Point;
 import com.terserah.yugi.Manager.GameStateManager;
 import java.util.Scanner;
 import com.terserah.yugi.Main.GamePanel;
@@ -16,12 +15,21 @@ import java.util.*;
  * @author condro
  */
 public class DuelistLand extends GameState {
-    
+    //Array of Duelist
     public static ArrayList<Duelist> arrDuelist = new ArrayList<Duelist>();
+    
+    //Current Duelist for DuelState
+    private static Duelist curDuelist ;
+    
+    //Array Map
     private String[][] arrMap;
     
     public DuelistLand(GameStateManager gsm){
         super(gsm);
+    }
+    
+    public static Duelist getCurDuelist() {
+        return DuelistLand.curDuelist;
     }
     
     public void makeMap() {
@@ -45,6 +53,7 @@ public class DuelistLand extends GameState {
         }
         //shop
         arrMap[2][2] = "S";
+        arrMap[9][8] = "S";
     }  
     public void printMap() {
         makeMap();
@@ -138,6 +147,23 @@ public class DuelistLand extends GameState {
     public boolean meetDuelist() {
         int x = GamePanel.PemainUtama.getPosisi().getX();
         int y = GamePanel.PemainUtama.getPosisi().getY();
-        return ("D".equals(this.arrMap[x-1][y-1]));     
+        DuelistLand.curDuelist = findByPosition(x,y);
+        return ("D".equals(this.arrMap[x-1][y-1]));    
+    }
+    
+    public Duelist findByPosition(int x,int y) {
+        boolean flag = false;
+        int idx =0 ;
+        for (int i=0; i<DuelistLand.arrDuelist.size();i++) {
+            if ((x==DuelistLand.arrDuelist.get(i).getPosisi().getX()) &&
+                (y==DuelistLand.arrDuelist.get(i).getPosisi().getY())) {
+                flag = true;
+                idx = i;
+            }
+        }
+        if (flag) 
+            return DuelistLand.arrDuelist.get(idx) ;
+        else 
+            return null;
     }
 }

@@ -1,4 +1,5 @@
 package com.terserah.yugi.Manager;
+
 import com.terserah.yugi.Entities.*;
 import com.terserah.yugi.GameState.DuelistLand;
 import com.terserah.yugi.GameState.ShopState;
@@ -18,7 +19,7 @@ import org.json.simple.parser.*;
  * @author condro
  */
 public class JSONManager {
-    public static ArrayList<MainPlayer> semuaPemain = new ArrayList<MainPlayer>();
+    
     
     public static void exportCard() {
     JSONObject obj = new JSONObject();
@@ -265,10 +266,10 @@ public class JSONManager {
                     ATK = (Long) monstermember.get("ATK");
                     DEF = (Long) monstermember.get("DEF");
                     level = (Long) monstermember.get("level");
-                    Monster monster = new Monster(cardname,desc,"monster",
+                    Monster monster = new Monster(cardname,desc,Location.DECK,
                                           prob.floatValue(), ATK.intValue() , DEF.intValue(), 
                                           level.intValue(),
-                                          attrib,type,position);
+                                          attrib,type,Mode.ATTACK);
                     
                     ShopState.allCard.addToBottom(monster);
                 }
@@ -284,7 +285,7 @@ public class JSONManager {
                     desc = (String) spellmember.get("description");
                     type = (String) spellmember.get("type");
                     prob = (Double) spellmember.get("probability");
-                    Spell spell = new Spell(cardname,desc,"spell",prob.floatValue()
+                    Spell spell = new Spell(cardname,desc,Location.DECK,prob.floatValue()
                                             , "null");
                     ShopState.allCard.addToBottom(spell);
                 }
@@ -300,7 +301,7 @@ public class JSONManager {
                     desc = (String) trapmember.get("description");
                     type = (String) trapmember.get("type");
                     prob = (Double) trapmember.get("probability");
-                    Trap trap = new Trap(cardname,desc,"spell",prob.floatValue()
+                    Trap trap = new Trap(cardname,desc,Location.DECK,prob.floatValue()
                                             , "null");                   
                     ShopState.allCard.addToBottom(trap);
                 }
@@ -325,83 +326,42 @@ public class JSONManager {
 	  Long jumlah  = (Long) jsonObject.get("count");
 	  //System.out.println("Count = "+jumlah);
 
-	 JSONArray duelistmember = (JSONArray) jsonObject.get("duelistmember");
-	 for (int i = 0; i<duelistmember.size();i++) {
+	 JSONArray player = (JSONArray) jsonObject.get("save");
+	 for (int i = 0; i<player.size();i++) {
              String name,rank;
-             int x,y;
-             Long xl,yl;
+             Long x,y,money ;
              
-             JSONObject jsonAnggota = (JSONObject) duelistmember.get(i);
+             JSONObject jsonAnggota = (JSONObject) player.get(i);
              JSONObject biodata = (JSONObject) jsonAnggota.get("biodata");
                 name = (String) biodata.get("name");
+                x = (Long) biodata.get("x");
+                y = (Long) biodata.get("y");
                 rank = (String) biodata.get("rank");
-                xl = (Long) biodata.get("x");
-                yl = (Long) biodata.get("y");
-                x = xl.intValue();
-                y = yl.intValue(); 
-                JSONObject deck = (JSONObject) jsonAnggota.get("deck");
-                //Array List<Card>
-                ArrayList<Card> arrCard = new ArrayList<Card>();
-                
-                JSONArray monsterlist = (JSONArray) deck.get("monster");
+            JSONObject deck = (JSONObject) jsonAnggota.get("deck");
+            //Array List<Card>
+            Deck playerDeck = new Deck();
+
+            JSONArray monsterlist = (JSONArray) deck.get("monster");
                 
                 for (int j=0; j<monsterlist.size();j++) {
-                    JSONObject monstermember = (JSONObject) monsterlist.get(j);
-                    String cardname,desc,post,attrib,type,position;
-                    Double prob;
-                    Long ATK,DEF,level;
-                    
-                    cardname = (String) monstermember.get("name");
-                    desc = (String) monstermember.get("description");
-                    attrib = (String) monstermember.get("attr");
-                    position = (String) monstermember.get("pos");
-                    type = (String) monstermember.get("type");
-                    prob = (Double) monstermember.get("probability");
-                    ATK = (Long) monstermember.get("ATK");
-                    DEF = (Long) monstermember.get("DEF");
-                    level = (Long) monstermember.get("level");
-                    Monster monster = new Monster(cardname,desc,"monster",
-                                          prob.floatValue(), ATK.intValue() , DEF.intValue(), 
-                                          level.intValue(),
-                                          attrib,type,position);
-                    
-                    arrCard.add(monster);
+                    String cardname = (String) monsterlist.get(j);
+                    playerDeck.addToBottom(ShopState.allCard.getbyJenis("Monster").getbyName(cardname));
                 }
                 
                 JSONArray spelllist = (JSONArray) deck.get("spell");
                 
-                for (int j=0; j<spelllist.size();j++) {
-                    JSONObject spellmember = (JSONObject) spelllist.get(j);
-                    String cardname,desc,type;
-                    Double prob;
-                    
-                    cardname = (String) spellmember.get("name");
-                    desc = (String) spellmember.get("description");
-                    type = (String) spellmember.get("type");
-                    prob = (Double) spellmember.get("probability");
-                    Spell spell = new Spell(cardname,desc,"spell",prob.floatValue()
-                                            , "null");
-                    arrCard.add(spell);
+                for (int j=0; j<spelllist.size();j++) {          
+                    String cardname = (String) spelllist.get(j);
+                    playerDeck.addToBottom(ShopState.allCard.getbyJenis("Spell").getbyName(cardname));
                 }
                 JSONArray traplist = (JSONArray) deck.get("trap");
                 
                 for (int j=0; j<traplist.size();j++) {
-                    JSONObject trapmember = (JSONObject) traplist.get(j);
-                    String cardname,desc,type;
-                    Double prob;
-                    
-                    cardname = (String) trapmember.get("name");
-                    desc = (String) trapmember.get("description");
-                    type = (String) trapmember.get("type");
-                    prob = (Double) trapmember.get("probability");
-                    Trap trap = new Trap(cardname,desc,"spell",prob.floatValue()
-                                            , "null");
-                    arrCard.add(trap);
+                    String cardname = (String) traplist.get(j);
+                    playerDeck.addToBottom(ShopState.allCard.getbyJenis("Trap").getbyName(cardname));
                 }
                 
-                Deck duelistdeck = new Deck(arrCard);
-                Duelist duelist = new Duelist(name,x,y,rank, duelistdeck);
-                DuelistLand.arrDuelist.add(duelist);
+                DuelistLand.arrDuelist.add(new Duelist(name,x.intValue(), y.intValue(),rank, playerDeck));
          }
 	} catch (FileNotFoundException ex) {
 	   ex.printStackTrace();
@@ -409,52 +369,52 @@ public class JSONManager {
 	   ex.printStackTrace();
 	} catch (ParseException ex) {
 	   ex.printStackTrace();
-	}
+	}      
     }
     
     public static void exportDuelist() {
     JSONObject obj = new JSONObject();
     //Tingkat 1
-    obj.put("count", new Integer(2));
+    obj.put("count", DuelistLand.arrDuelist.size());
     //Tingkat 1,2
     JSONArray duelistmember = new JSONArray();
-    JSONObject memberObject1 = new JSONObject();
-    //Tingkat 2
-    JSONObject biodata = new JSONObject();
-    biodata.put("name", "Yugi");
-    biodata.put("x", 2);
-    biodata.put("y", 3);
-    biodata.put("rank", "dewa");
-    JSONObject deck = new JSONObject();
-        //Tingkat 4
-        JSONArray monstertype = new JSONArray();
-        JSONArray spelltype = new JSONArray();
-        JSONArray traptype = new JSONArray();
 
-        //Tingkat 5
-        JSONObject member1 = new JSONObject();
-        member1.put("name", "Blue-Eyes White Dragon");
-        member1.put("type", "Monster");
-        member1.put("probability", new Float(0.03));
-        member1.put("description", "This legendary dragon is a powerful engine of "
-                + "destruction. Virtually invincible, very few have faced this "
-                + "awesome creature and lived to tell the tale."); 
-        member1.put("ATK", 3000);
-        member1.put("DEF", 2500);
-        member1.put("level", 8);
-        member1.put("attr", "Light");
-        member1.put("type", "Dragon");
-        member1.put("effect", "null");
-        member1.put("pos", "Face Up Attack");
-    
-    monstertype.add(member1);
-    deck.put("monster", monstertype);
-    deck.put("trap", traptype);
-    deck.put("spell", spelltype);
-    memberObject1.put("biodata", biodata);
-    memberObject1.put("deck", deck);
-    duelistmember.add(memberObject1);
-    obj.put("duelistmember", duelistmember);
+       for (int o=0; o<DuelistLand.arrDuelist.size();o++) {
+            JSONObject member = new JSONObject();
+            //Tingkat 2
+            JSONObject biodata = new JSONObject();
+            
+            biodata.put("name", DuelistLand.arrDuelist.get(o).getName());
+            biodata.put("x",DuelistLand.arrDuelist.get(o).getPosisi().getX());
+            biodata.put("y", DuelistLand.arrDuelist.get(o).getPosisi().getY());
+            biodata.put("rank", DuelistLand.arrDuelist.get(o).getRank());
+            JSONObject deck = new JSONObject();
+                //Tingkat 4
+                JSONArray monstertype = new JSONArray();
+                JSONArray spelltype = new JSONArray();
+                JSONArray traptype = new JSONArray();
+                //Array monster dari deck pemain
+                for (int i = 0; i< DuelistLand.arrDuelist.get(o).getDeck().getbyJenis("Monster").getSize();i++) {
+                    monstertype.add(DuelistLand.arrDuelist.get(o).getDeck().getbyJenis("Monster").get(i).getName());
+                }
+                for (int i = 0; i< DuelistLand.arrDuelist.get(o).getDeck().getbyJenis("Spell").getSize();i++) {
+                    spelltype.add(DuelistLand.arrDuelist.get(o).getDeck().getbyJenis("Spell").get(i).getName());
+                }
+                for (int i = 0; i< DuelistLand.arrDuelist.get(o).getDeck().getbyJenis("Trap").getSize();i++) {
+                    traptype.add(DuelistLand.arrDuelist.get(o).getDeck().getbyJenis("Trap").get(i).getName());
+                }
+
+            deck.put("monster", monstertype);
+            deck.put("trap", traptype);
+            deck.put("spell", spelltype);
+
+            member.put("biodata", biodata);
+            member.put("deck", deck);
+            
+            duelistmember.add(member);
+        }
+        obj.put("save", duelistmember);
+        
     
     try {
         FileWriter file = new FileWriter("duelist.json");
@@ -483,7 +443,7 @@ public class JSONManager {
 
 	 JSONArray player = (JSONArray) jsonObject.get("save");
 	 for (int i = 0; i<player.size();i++) {
-             String name;
+             String name, lastplayed;
              Long x,y,money ;
              
              JSONObject jsonAnggota = (JSONObject) player.get(i);
@@ -492,6 +452,7 @@ public class JSONManager {
                 x = (Long) biodata.get("x");
                 y = (Long) biodata.get("y");
                 money = (Long) biodata.get("money");
+                lastplayed = (String) biodata.get("lastplayed");
             JSONObject deck = (JSONObject) jsonAnggota.get("deck");
             //Array List<Card>
             Deck playerDeck = new Deck();
@@ -540,8 +501,9 @@ public class JSONManager {
                     allCard.addToBottom(ShopState.allCard.getbyJenis("Trap").getbyName(cardname));
                 }
                 
-                JSONManager.semuaPemain.add(new MainPlayer(name,x.intValue(),
-                                            y.intValue(),money.intValue() ,allCard,playerDeck));
+                GamePanel.semuaPemain.add(new MainPlayer(name, x.intValue(),
+                                            y.intValue(),money.intValue(),
+                                            allCard, playerDeck, lastplayed) );
          }
 	} catch (FileNotFoundException ex) {
 	   ex.printStackTrace();
@@ -556,20 +518,21 @@ public class JSONManager {
     
         JSONObject obj = new JSONObject();
         //Tingkat 1
-        obj.put("count", JSONManager.semuaPemain.size());
+        obj.put("count", GamePanel.semuaPemain.size());
         //Tingkat 1,2
         JSONArray duelistmember = new JSONArray();
         
         //
-        for (int o=0; o<JSONManager.semuaPemain.size();o++) {
+        for (int o=0; o<GamePanel.semuaPemain.size();o++) {
             JSONObject member = new JSONObject();
             //Tingkat 2
             JSONObject biodata = new JSONObject();
             
-            biodata.put("name", JSONManager.semuaPemain.get(o).getName());
-            biodata.put("x",JSONManager.semuaPemain.get(o).getPosisi().getX());
-            biodata.put("y", JSONManager.semuaPemain.get(o).getPosisi().getY());
-            biodata.put("money", JSONManager.semuaPemain.get(o).getMONEY());
+            biodata.put("name", GamePanel.semuaPemain.get(o).getName());
+            biodata.put("x",GamePanel.semuaPemain.get(o).getPosisi().getX());
+            biodata.put("y", GamePanel.semuaPemain.get(o).getPosisi().getY());
+            biodata.put("money", GamePanel.semuaPemain.get(o).getMONEY());
+            biodata.put("lastplayed", GamePanel.semuaPemain.get(o).getLastPlayed());
             JSONObject deck = new JSONObject();
             JSONObject allcard = new JSONObject();
                 //Tingkat 4
@@ -577,14 +540,14 @@ public class JSONManager {
                 JSONArray spelltype = new JSONArray();
                 JSONArray traptype = new JSONArray();
                 //Array monster dari deck pemain
-                for (int i = 0; i< JSONManager.semuaPemain.get(o).getDeck().getbyJenis("Monster").getSize();i++) {
-                    monstertype.add(JSONManager.semuaPemain.get(o).getDeck().getbyJenis("Monster").get(i).getName());
+                for (int i = 0; i< GamePanel.semuaPemain.get(o).getDeck().getbyJenis("Monster").getSize();i++) {
+                    monstertype.add(GamePanel.semuaPemain.get(o).getDeck().getbyJenis("Monster").get(i).getName());
                 }
-                for (int i = 0; i< JSONManager.semuaPemain.get(o).getDeck().getbyJenis("Spell").getSize();i++) {
-                    spelltype.add(JSONManager.semuaPemain.get(o).getDeck().getbyJenis("Spell").get(i).getName());
+                for (int i = 0; i< GamePanel.semuaPemain.get(o).getDeck().getbyJenis("Spell").getSize();i++) {
+                    spelltype.add(GamePanel.semuaPemain.get(o).getDeck().getbyJenis("Spell").get(i).getName());
                 }
-                for (int i = 0; i< JSONManager.semuaPemain.get(o).getDeck().getbyJenis("Trap").getSize();i++) {
-                    traptype.add(JSONManager.semuaPemain.get(o).getDeck().getbyJenis("Trap").get(i).getName());
+                for (int i = 0; i< GamePanel.semuaPemain.get(o).getDeck().getbyJenis("Trap").getSize();i++) {
+                    traptype.add(GamePanel.semuaPemain.get(o).getDeck().getbyJenis("Trap").get(i).getName());
                 }
 
             deck.put("monster", monstertype);
@@ -595,14 +558,14 @@ public class JSONManager {
                 JSONArray allspelltype = new JSONArray();
                 JSONArray alltraptype = new JSONArray();
                 //Array monster dari deck pemain
-                for (int i = 0; i< JSONManager.semuaPemain.get(o).getAllCard().getbyJenis("Monster").getSize();i++) {
-                    allmonstertype.add(JSONManager.semuaPemain.get(o).getAllCard().getbyJenis("Monster").get(i).getName());
+                for (int i = 0; i< GamePanel.semuaPemain.get(o).getAllCard().getbyJenis("Monster").getSize();i++) {
+                    allmonstertype.add(GamePanel.semuaPemain.get(o).getAllCard().getbyJenis("Monster").get(i).getName());
                 }
-                for (int i = 0; i< JSONManager.semuaPemain.get(o).getAllCard().getbyJenis("Spell").getSize();i++) {
-                    allspelltype.add(JSONManager.semuaPemain.get(o).getAllCard().getbyJenis("Spell").get(i).getName());
+                for (int i = 0; i< GamePanel.semuaPemain.get(o).getAllCard().getbyJenis("Spell").getSize();i++) {
+                    allspelltype.add(GamePanel.semuaPemain.get(o).getAllCard().getbyJenis("Spell").get(i).getName());
                 }
-                for (int i = 0; i< JSONManager.semuaPemain.get(o).getAllCard().getbyJenis("Trap").getSize();i++) {
-                    alltraptype.add(JSONManager.semuaPemain.get(o).getAllCard().getbyJenis("Trap").get(i).getName());
+                for (int i = 0; i< GamePanel.semuaPemain.get(o).getAllCard().getbyJenis("Trap").getSize();i++) {
+                    alltraptype.add(GamePanel.semuaPemain.get(o).getAllCard().getbyJenis("Trap").get(i).getName());
                 }
 
             allcard.put("monster", allmonstertype);

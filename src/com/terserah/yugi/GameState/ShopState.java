@@ -58,8 +58,9 @@ public class ShopState extends GameState {
             switch (opt) {
                 case "1":
                 case "iya" :
-                    int z;
-                    for (z =1; z <=3; z++){
+                    int money = GamePanel.PemainUtama.getMONEY();
+                    GamePanel.PemainUtama.setMONEY(money-200);
+                    for (int z =1; z <=3; z++){
                         Random rand = new Random();
                         int v = rand.nextInt(99);
                         if ((v >=0) && (v <= 1)) {

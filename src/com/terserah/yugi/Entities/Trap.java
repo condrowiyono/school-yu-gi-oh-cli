@@ -12,8 +12,8 @@ package com.terserah.yugi.Entities;
 public class Trap extends Card{
 	private String position;
 	//konstruktor
-	public Trap(String name, String description, String pos, float probability, String position) {
-		super(name, description, pos, probability);
+	public Trap(String name, String description, Location loc, float probability, String position) {
+		super(name, description, loc, probability);
 		this.position = position;
 	}
 	//setter getter
@@ -27,14 +27,14 @@ public class Trap extends Card{
 	//method
 
 	public void set() {
-		if (this.getPos().equals("Hand")) {
+		if (this.getLoc().equals(Location.HAND)) {
 			this.setPosition("Set");
-			this.setPos("Field");
+			this.setLoc(Location.FIELD);
 		}
 	}
 
 	public void flip() {
-		if (this.getPos().equals("Field") && (this.getPosition().equals("Set"))) {
+		if (this.getLoc().equals(Location.FIELD) && (this.getPosition().equals("Set"))) {
 			this.setPosition("Open");
 			//effect
 		}
@@ -42,7 +42,7 @@ public class Trap extends Card{
 
 	public void finish() {
 		this.setPosition("Other");
-		this.setPos("Graveyard");
+		this.setLoc(Location.GRAVEYARD);
 	}
     @Override
     public String getJenis() {

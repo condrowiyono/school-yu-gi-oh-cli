@@ -30,14 +30,14 @@ public class LoadState extends GameState {
         
     }
     private void printLoadFile() {
-        for (int i = 0; i< JSONManager.semuaPemain.size();i++ )
-            System.out.println(i+ "\t" + JSONManager.semuaPemain.get(i).getName());
+        for (int i = 0; i< GamePanel.semuaPemain.size();i++ )
+            System.out.println(i+ "\t" + GamePanel.semuaPemain.get(i).getName());
     }
     
     private boolean cekLoadFile(String id) {
         boolean flag = false;
         String idx;
-        for (int i = 0; i< JSONManager.semuaPemain.size() ;i++) {
+        for (int i = 0; i< GamePanel.semuaPemain.size() ;i++) {
             idx = Integer.toString(i);
             if (id.equals(idx))
                 flag = true;
@@ -62,7 +62,7 @@ public class LoadState extends GameState {
         case "load":
             if (cekLoadFile(arrOpt[1])) {
                 int idx= Integer.parseInt(arrOpt[1]);
-                GamePanel.PemainUtama = JSONManager.semuaPemain.get(idx);
+                GamePanel.PemainUtama = GamePanel.semuaPemain.get(idx);
                 gsm.setState(GameStateManager.MENU);
 
             } else {

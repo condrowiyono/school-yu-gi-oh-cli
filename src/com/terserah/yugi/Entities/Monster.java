@@ -12,16 +12,20 @@ package com.terserah.yugi.Entities;
 public class Monster extends Card{
 	//attributes
 	private int ATK, DEF, level;
-	private String elemen, type, position;
+	private String elemen, type;
+        private Mode mode;
 	//konstruktor
-	public Monster(String name, String desc, String post, float prob, int ATK, int DEF, int level, String elemen, String type, String position) {
-		super(name, desc, post, prob);
+	public Monster(String name, String desc, Location loc, float prob, 
+                    int ATK, int DEF, int level, String elemen, String type, 
+                    Mode mode) {
+		
+                super(name, desc, loc, prob);
 		this.ATK = ATK;
 		this.DEF = DEF;
 		this.level = level;
 		this.elemen = elemen;
 		this.type = type;
-		this.position = position;
+		this.mode = mode;
 	}
 	//setter getter
 	public void setATK(int atk) {
@@ -44,8 +48,8 @@ public class Monster extends Card{
 		this.type = type;
 	}
 
-	public void setPosition(String posit) {
-		this.position = posit;
+	public void setMode(Mode mode) {
+		this.mode = mode;
 	}
 
 	public int getATK() {
@@ -68,13 +72,13 @@ public class Monster extends Card{
 		return this.type;
 	}
 
-	public String getPosition() {
-		return this.position;
+	public Mode getMode() {
+		return this.mode;
 	}
 
 	public void summon() {
-		this.setPos("Field");
-		this.setPosition("Attack");
+		this.setLoc(Location.FIELD);
+		this.setMode(Mode.ATTACK);
 	}
 
 	public void summon(Monster m) {
@@ -89,34 +93,34 @@ public class Monster extends Card{
 	}
 
 	public void set() {
-		this.setPos("Field");
-		this.setPosition("Close Defend");
+		this.setLoc(Location.FIELD);
+		this.setMode(Mode.DEFENSE);
 	}
 
 	public void destroyed() {
-		this.setPos("Graveyard");
-		this.setPosition("Other");
+		this.setLoc(Location.GRAVEYARD);
+		//this.setPosition("Other");
 	}
 
 	public void substituted() {
-		this.setPos("Graveyard");
-		this.setPosition("Other");
+		this.setLoc(Location.GRAVEYARD);
+		//this.setPosition("Other");
 	}
 
 	public void changeToATK() {
-		this.setPosition("Attack");
+		this.setMode(Mode.ATTACK);
 	}
 
 	public void changeToDEF() {
-		this.setPosition("Open Defend");
+		this.setMode(Mode.DEFENSE);
 	}
 
 	public void flip() {
-		this.setPosition("Attack");
+		this.setMode(Mode.ATTACK);
 	}
 
 	public void flipSummon() {
-		this.setPosition("Attack");
+		this.setMode(Mode.ATTACK);
 	}
 
 	/* nunggu selesai dibuat class pendukungnyas

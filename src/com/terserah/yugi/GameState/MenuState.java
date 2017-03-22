@@ -48,6 +48,7 @@ public class MenuState extends GameState {
                     break;
                 case "s":
                 case "save":
+                    GamePanel.PemainUtama.setLastPlayed();
                     JSONManager.exportPlayer();
                     break;
                 case "q":

@@ -11,7 +11,8 @@ package com.terserah.yugi.Entities;
  */
 public abstract class Card{
 	//attributes
-	private String name, description, pos, slug;
+	private String name, description, slug;
+        private Location loc;
 	private float probability = 0;
 	//konstruktor
 	
@@ -19,10 +20,9 @@ public abstract class Card{
 		this.name = name;
                 this.slug = name.replaceAll(" ", "").toLowerCase();
 	}
-	public Card(String name, String description, String pos, float probability) {
+	public Card(String name, String description, Location pos, float probability) {
 		this.name = name;
 		this.description = description;
-		this.pos = pos;
 		this.probability = probability;
                 this.slug = name.replaceAll(" ", "").toLowerCase();
 	}
@@ -35,8 +35,8 @@ public abstract class Card{
 		this.description = desc;
 	}
 
-	public void setPos(String pos) {
-		this.pos = pos;
+	public void setLoc(Location loc) {
+		this.loc = loc;
 	}
 
 	public void setProability(float prob) {
@@ -51,8 +51,8 @@ public abstract class Card{
 		return this.description;
 	}
 
-	public String getPos() {
-		return this.pos;
+	public Location getLoc() {
+		return this.loc;
 	}
 
 	public float getProbability() {

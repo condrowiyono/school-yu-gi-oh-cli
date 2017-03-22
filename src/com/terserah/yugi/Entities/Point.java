@@ -5,7 +5,7 @@
  */
 package com.terserah.yugi.Entities;
 
-import java.lang.Math;
+
 
 public class Point {
 	int  x;
@@ -44,12 +44,5 @@ public class Point {
 	public void move(int x, int y) { 
 		this.x = this.x + x;
 		this.y = this.y + y;
-	}
-
-	
-	public double distanceTo(Point p){
-		double dx = this.x - p.getX();
-		double dy = this.y - p.getY();
-		return Math.sqrt(dx*dx + dy*dy);
 	}
 }
