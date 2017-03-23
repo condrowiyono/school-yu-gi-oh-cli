@@ -12,8 +12,8 @@ import java.util.ArrayList;
  * @author muhfai
  */
 public class Field{
-        private final int maxMonster = 3;
-        private final int maxSpellTrap = 3;
+        private static final int maxMonster = 3;
+        private static final int maxSpellTrap = 3;
         
         private ArrayList<Monster> MONSTER ;
         private ArrayList<Card> SPELLTRAP ;
@@ -29,6 +29,10 @@ public class Field{
             this.GRAVEYARD = new ArrayList<Card>();
             this.DECK = new Deck();
             this.phase = Phase.MAIN1;
+        }
+        
+        public void setDeck(Deck deck) {
+            this.DECK = deck;
         }
         
         //setter getter
@@ -55,27 +59,28 @@ public class Field{
             return DECK;
         }
         
-        public void addMonsterToField(Monster monster, Mode m) {
+        public void addMonsterToField(Monster monster, Mode m, boolean hidden) {
             Location  loc = monster.getLoc();
             if (loc==Location.HAND)
                 HAND.remove(monster);
             monster.setMode(m);
+            monster.setHidden(hidden);
             monster.setLoc((Location.FIELD));
             MONSTER.add(monster);
         }
         
-        public void addMonsterToField(Monster monster, Mode m,
+        public void addMonsterToField(Monster monster, Mode m, boolean hidden,
                 ArrayList<Monster> tribute) {
             removeMonsterToGraveyard(tribute);
-            addMonsterToField(monster, m);
+            addMonsterToField(monster, m, hidden);
         }
         
-        private void removeMonsterToGraveyard(ArrayList<Monster> tribute) {
+        public void removeMonsterToGraveyard(ArrayList<Monster> tribute) {
             for (int i = 0 ; i < MONSTER.size();i++) 
                 removeMonsterToGraveyard(MONSTER.get(i));
         }
         
-        private void removeMonsterToGraveyard(Monster monster) {
+        public void removeMonsterToGraveyard(Monster monster) {
             if (MONSTER.contains(monster)) {
                 monster.setLoc(Location.GRAVEYARD);
                 MONSTER.remove(monster);
@@ -83,9 +88,125 @@ public class Field{
             }
         }
         
+        public void addSpellToField(Spell spell, Monster monster, boolean hidden) {
+            if (this.SPELLTRAP.size() < this.maxSpellTrap) {
+                spell.setHidden(hidden);
+                spell.setLoc(Location.FIELD);
+                HAND.remove(spell);
+                if (!hidden)
+                    activateSpell(spell, monster);
+                else
+                    spell.setHidden(true);
+            }
+        }
+        
+        public void activateSpell(Spell spell, Monster monster){
+            if (this.SPELLTRAP.contains(spell) &&
+                    this.getPhase() != Phase.BATTLE) {
+                
+                spell.setHidden(false);
+                CardEffect.actionSpell(spell, monster);
+                CardEffect.actionSpell(spell, this.MONSTER);
+                removeSpellToGraveyard(spell);
+            }
+        }
+        
+        public void removeSpellToGraveyard(Spell spell) {
+            if (this.SPELLTRAP.contains(spell)) {
+                this.SPELLTRAP.remove(spell);
+                spell.setLoc(Location.GRAVEYARD);
+                this.GRAVEYARD.add(spell);
+            }
+        }
+        
+        public void removeSpellToGraveyard(ArrayList<Spell> spells) {
+		int n = spells.size();
+		for (int i = n - 1; i >= 0; i--) {
+			if (this.SPELLTRAP.contains(spells.get(i)))
+				removeSpellToGraveyard(spells.get(i));
+		}            
+        }
+        
+        public void addTrapToField(Trap trap, Monster monster, boolean hidden) {
+            if (this.SPELLTRAP.size() < this.maxSpellTrap) {
+                trap.setHidden(hidden);
+                trap.setLoc(Location.FIELD);
+                HAND.remove(trap);
+                if (!hidden)
+                    activateTrap(trap, monster);
+                else
+                    trap.setHidden(true);
+            }
+        }
+        
+        public void activateTrap(Trap trap, Monster monster){
+            if (this.SPELLTRAP.contains(trap) &&
+                    this.getPhase() != Phase.BATTLE) {
+                
+                trap.setHidden(false);
+                CardEffect.actionTrap(trap, monster);
+                CardEffect.actionTrap(trap, this.MONSTER);
+                removeTrapToGraveyard(trap);
+            }
+        }
+        
+        public void removeTrapToGraveyard(Trap trap) {
+            if (this.SPELLTRAP.contains(trap)) {
+                this.SPELLTRAP.remove(trap);
+                trap.setLoc(Location.GRAVEYARD);
+                this.GRAVEYARD.add(trap);
+            }
+        }
+        
+        public void removeTrapToGraveyard(ArrayList<Trap> traps) {
+		int n = traps.size();
+		for (int i = n - 1; i >= 0; i--) {
+			if (this.SPELLTRAP.contains(traps.get(i)))
+				removeTrapToGraveyard(traps.get(i));
+		}            
+        }    
+        
+        public void addCardsToHand() {
+            Card card = this.DECK.draw();
+            card.setLoc(Location.HAND);
+            this.HAND.add(card);
+        }
+        
+        public void addNCardsToHand(int n) {
+            ArrayList<Card> d = this.DECK.drawNCards(n);
+            for (Card card : d) {
+                card.setLoc(Location.HAND);
+                this.HAND.add(card);
+            }
+        }
+        
+        //Card Destruction
+        public int removeHandToGraveyard() {
+            for (int i=0;i<this.HAND.size();i++) {
+                Card tem = this.HAND.remove(i);
+                tem.setLoc(Location.GRAVEYARD);
+                this.GRAVEYARD.add(tem);
+            }
+            return this.HAND.size();
+        }
         
         
+        public void clearAll() {
+            for (int i=0; i< this.MONSTER.size();i++){
+                this.MONSTER.get(i).setAttackingOption(true);
+                this.MONSTER.get(i).setSwitchingOption(true);
+            }
+        }
         
+	public boolean CheckAddingCard() {
+		if(this.phase==Phase.BATTLE)
+			System.out.print("Salah Fase");
+		return ((this.phase == Phase.MAIN1 || this.phase == Phase.MAIN2)
+				&& Card.getActiveField() == this && Card.getBoard().getWinner() == null);
+
+	}
+            
+        //spell dan trap
         //tambahkan monster ke field
         //public void addMonsterToField(Monster monster, )
         

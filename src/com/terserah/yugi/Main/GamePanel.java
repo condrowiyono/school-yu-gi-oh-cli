@@ -1,5 +1,6 @@
 package com.terserah.yugi.Main;
 
+import com.terserah.yugi.Entities.Deck;
 import com.terserah.yugi.Entities.MainPlayer;
 import com.terserah.yugi.Manager.GameStateManager;
 import java.util.ArrayList;
@@ -16,8 +17,8 @@ public class GamePanel implements Runnable {
 		}
                 
                 public static void createPlayer(String name){
-                    GamePanel.PemainUtama = new MainPlayer(name, Game.getRandCard(15));
-                    
+                    GamePanel.PemainUtama = new MainPlayer(name, Deck.getRandCard(15));
+                    GamePanel.PemainUtama.setDeck(Deck.getRandCard(11));
                 }
                 
                 public static MainPlayer getMainPlayer() {

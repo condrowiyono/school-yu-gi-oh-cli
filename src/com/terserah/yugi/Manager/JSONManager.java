@@ -269,7 +269,7 @@ public class JSONManager {
                     Monster monster = new Monster(cardname,desc,Location.DECK,
                                           prob.floatValue(), ATK.intValue() , DEF.intValue(), 
                                           level.intValue(),
-                                          attrib,type,Mode.ATTACK);
+                                          attrib,type,Mode.ATTACK, true);
                     
                     ShopState.allCard.addToBottom(monster);
                 }
@@ -286,7 +286,7 @@ public class JSONManager {
                     type = (String) spellmember.get("type");
                     prob = (Double) spellmember.get("probability");
                     Spell spell = new Spell(cardname,desc,Location.DECK,prob.floatValue()
-                                            , "null");
+                                            , true);
                     ShopState.allCard.addToBottom(spell);
                 }
                 
@@ -302,7 +302,7 @@ public class JSONManager {
                     type = (String) trapmember.get("type");
                     prob = (Double) trapmember.get("probability");
                     Trap trap = new Trap(cardname,desc,Location.DECK,prob.floatValue()
-                                            , "null");                   
+                                            , true);                   
                     ShopState.allCard.addToBottom(trap);
                 }
          

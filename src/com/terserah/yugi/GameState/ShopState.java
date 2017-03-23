@@ -41,7 +41,8 @@ public class ShopState extends GameState {
         int k = 1;
         Deck monster = deck.getbyJenis("Monster");
         for (i = 0; i < monster.getSize();i++) {
-          System.out.println(k+": " +monster.get(i).getJenis()+ ": "+monster.get(i).getName());
+          Monster mm = (Monster) monster.get(i);
+          System.out.println(k+": " + mm.getLevel() + ": "+monster.get(i).getName());
           k++;
         }
     }

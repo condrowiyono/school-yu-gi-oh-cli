@@ -10,43 +10,44 @@ package com.terserah.yugi.Entities;
  * @author muhfai
  */
 public class Trap extends Card{
-	private String position;
-	//konstruktor
-	public Trap(String name, String description, Location loc, float probability, String position) {
-		super(name, description, loc, probability);
-		this.position = position;
-	}
-	//setter getter
-	public void setPosition(String position) {
-		this.position = position;
-	}
+    private boolean hidden;
 
-	public String getPosition() {
-		return this.position;
-	}
-	//method
+    //konstruktor
+    public Trap(String name, String description, Location loc, float probability, boolean hidden) {
+            super(name, description, loc, probability);
+            this.hidden = false;
+    }
+    //setter getter
+    public void setHidden(Boolean hidden) {
+            this.hidden = hidden;
+    }
 
-	public void set() {
-		if (this.getLoc().equals(Location.HAND)) {
-			this.setPosition("Set");
-			this.setLoc(Location.FIELD);
-		}
-	}
+    public boolean getHidden() {
+            return this.hidden;
+    }
+    //method
 
-	public void flip() {
-		if (this.getLoc().equals(Location.FIELD) && (this.getPosition().equals("Set"))) {
-			this.setPosition("Open");
-			//effect
-		}
-	}
+    public void set() {
+            if (this.getLoc().equals(Location.HAND)) {
+                    this.setHidden(true);
+                    this.setLoc(Location.FIELD);
+            }
+    }
 
-	public void finish() {
-		this.setPosition("Other");
-		this.setLoc(Location.GRAVEYARD);
-	}
+    public void flip() {
+            if (this.getLoc().equals(Location.FIELD) && (getHidden())) {
+                    this.setHidden(false);
+                    //effect
+            }
+    }
+
+    public void finish() {
+            this.setHidden(true);
+            this.setLoc(Location.GRAVEYARD);
+    }
     @Override
     public String getJenis() {
         return this.getClass().getSimpleName();
-    }
+       }
 
 }

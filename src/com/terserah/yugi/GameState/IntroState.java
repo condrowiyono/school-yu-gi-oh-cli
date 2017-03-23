@@ -36,7 +36,7 @@ public class IntroState extends GameState {
                 if (null != arrOpt[0]) switch (arrOpt[0]) {
                     case "new" :
                     case "N":
-                        System.out.println("Please Enter Name:");
+                        System.out.print("Please Enter Name : ");
                         String name;
                         name = in.nextLine();
                         GamePanel.createPlayer(name);

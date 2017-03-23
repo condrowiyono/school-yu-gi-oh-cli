@@ -12,9 +12,9 @@ package com.terserah.yugi.Entities;
 public class Spell extends Card{
     private boolean hidden;
     //konstruktor
-    public Spell(String name, String desc, Location loc, float prob, String position) {
+    public Spell(String name, String desc, Location loc, float prob, boolean hidden) {
             super(name, desc, loc, prob);
-            this.hidden = false;
+            this.hidden = hidden;
     }
     //setter getter
     public void setHidden(Boolean hidden) {

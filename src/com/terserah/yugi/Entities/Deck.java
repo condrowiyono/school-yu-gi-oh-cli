@@ -12,9 +12,10 @@ package com.terserah.yugi.Entities;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import com.terserah.yugi.GameState.*;
 
 public class Deck {
-    ArrayList<Card> deck = new ArrayList<Card>();
+    private ArrayList<Card> deck = new ArrayList<Card>();
     public final static int MAX_DECK_SIZE = 30;
     public final static int MIN_DECK_SIZE = 20;
     int numCardsRemaining; 
@@ -30,7 +31,10 @@ public class Deck {
         numCardsRemaining = deck.size();
         shuffle();
     }
-
+    
+    public ArrayList<Card> getArrDeck() {
+        return this.deck;
+    }
     private void shuffle(){
         Collections.shuffle(deck);
         /*
@@ -54,6 +58,13 @@ public class Deck {
         Card toDraw = deck.get(0);
         deck.remove(0);
         return toDraw;
+    }
+    public ArrayList<Card> drawNCards(int n) {
+        ArrayList<Card> res = new ArrayList<Card>();
+        for (int i=1;i<=n;i++) {
+            res.add(draw());
+        }
+        return res;
     }
 
     public int getNumCardsRemaining(){
@@ -129,6 +140,17 @@ public class Deck {
             return getDeck;
     }
     
-
+    public static Deck getRandCard(int n) {
+        ArrayList<Card> arrCard = new ArrayList<Card>();
+        
+        while (arrCard.size() < n) {
+            Random rand = new Random(); 
+            Card kartu = ShopState.allCard.get(rand.nextInt(ShopState.allCard.getSize()));
+            if (!arrCard.contains(kartu)) {
+                arrCard.add(kartu);
+            }
+        }
+        return new Deck(arrCard);
+    }
 }
 

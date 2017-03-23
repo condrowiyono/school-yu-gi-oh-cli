@@ -14,19 +14,25 @@ public class Monster extends Card{
 	private int ATK, DEF, level;
 	private String elemen, type;
         private Mode mode;
+        //dueling need
+        private boolean attackingOption;
+        private boolean switchingOption;
 	//konstruktor
 	public Monster(String name, String desc, Location loc, float prob, 
                     int ATK, int DEF, int level, String elemen, String type, 
-                    Mode mode) {
+                    Mode mode, boolean hidden) {
 		
-                super(name, desc, loc, prob);
+                super(name, desc, loc, prob,hidden);
 		this.ATK = ATK;
 		this.DEF = DEF;
 		this.level = level;
 		this.elemen = elemen;
 		this.type = type;
 		this.mode = mode;
+                this.attackingOption = true;
+                this.switchingOption = true;
 	}
+
 	//setter getter
 	public void setATK(int atk) {
 		this.ATK = atk;
@@ -122,43 +128,56 @@ public class Monster extends Card{
 	public void flipSummon() {
 		this.setMode(Mode.ATTACK);
 	}
+        
+        public boolean isAttackingOption() {
+            return this.attackingOption;
+        } 
+        public boolean isSwitchingOption() {
+            return this.switchingOption;
+        } 
+        public void setAttackingOption(boolean a) {
+            this.attackingOption = a;
+        }
+        
+        public void setSwitchingOption(boolean a) {
+            this.switchingOption = a;
+        }
+        
+        public void attack(Monster m) {
+            if ((this.getATK() > m.getDEF() && 
+                m.getMode() == Mode.DEFENSE) ||
+                (this.getATK()>m.getATK() &&
+                m.getMode() == Mode.ATTACK)) {
+                    if (m.mode == Mode.DEFENSE)
+                       Card.getOppField().removeMonsterToGraveyard(m);
+                    else {
+                        Card.getOppField().removeMonsterToGraveyard(m);
+                        Card.DecreaseLPOpp(this.getATK() - m.getATK());
+                    }
+            } else if ((this.getATK()<m.getDEF() &&
+                        m.getMode() == Mode.DEFENSE) ||
+                        (this.getATK()<m.getATK() &&
+                        m.getMode() == Mode.ATTACK)) {
+                    if (m.mode==Mode.DEFENSE) {
+                        Card.DecreaseLPActive(m.getDEF() - this.getATK());
+                        m.setHidden(false);
+                    } else {
+                        Card.getActiveField().removeMonsterToGraveyard(this);
+                        Card.DecreaseLPOpp((m.getATK() - this.getATK()));
+                    }
+            } else if (m.mode != Mode.DEFENSE) {
+                Card.getOppField().removeMonsterToGraveyard(m);
+                Card.getActiveField().removeMonsterToGraveyard(this);
+            }
+        }
 
-	/* nunggu selesai dibuat class pendukungnyas
-        public void attack(Monster m, Duelist d, Player p) {
-		if (m.getPosition().equals("Attack")) {
-			if(this.getATK() > m.getATK()) {
-				d.setLifePoint(d.getLifePoint() - (this.getATK() - m.getATK()));
-				m.destroyed();
-			} else if (this.getATK() == m.getATK()) {
-				this.destroyed();
-				m.destroyed();
-			} else {
-				p.setLifePoint(p.getLifePoint() - (m.getATK() - this.getATK()));
-				this.destroyed();
-			}
-		} else if (m.getPosition().equals("Open Defend")) {
-			if (this.getATK() > m.getDEF()) {
-				m.destroyed();
-			} else if (this.getATK() < m.getDEF()) {
-				p.setLifePoint(p.getLifePoint() - (m.getDEF() - this.getATK()));
-			}
-		} else if (m.getPosition().equals("Close Defend")) {
-			m.flip();
-			if (this.getATK() > m.getDEF()) {
-				m.destroyed();
-			} else if (this.getATK() < m.getDEF()) {
-				p.setLifePoint(p.getLifePoint() - (m.getDEF() - this.getATK()));
-			}
-		}
-	}
-
-	public void directAttack(Player p) {
-		p.setLifePoint(p.getLifePoint() - this.getATK());
+	public void directAttack() {
+            Card.DecreaseLPOpp(this.ATK);
+                
 	}
 
 	public void showDetail() {
 		System.out.println("Monster name	    : "+getName());
-		System.out.println("Monster description	: "+getDesc());
 		System.out.println("Monster ATK		    : "+getATK());
 		System.out.println("Monster DEF		    :"+getDEF());
 		System.out.println("Monster Level	    :"+getLevel());
@@ -166,10 +185,6 @@ public class Monster extends Card{
 		System.out.println("Monster Type	    :"+getType());
 	}
 
-	public void effect() {
-
-	}
-        */
         @Override
         public String getJenis() {
             return this.getClass().getSimpleName();

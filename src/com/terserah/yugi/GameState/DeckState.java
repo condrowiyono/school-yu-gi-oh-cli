@@ -5,6 +5,7 @@
  */
 package com.terserah.yugi.GameState;
 
+import com.terserah.yugi.Entities.Card;
 import com.terserah.yugi.Entities.Deck;
 import com.terserah.yugi.Main.GamePanel;
 import com.terserah.yugi.Manager.GameStateManager;
@@ -31,11 +32,14 @@ public class DeckState extends GameState {
     }
     
     public boolean cekCard(String slug) {
-        boolean flag = false;
-        for (int i = 0; i< GamePanel.PemainUtama.getAllCard().getSize();i++)
+        boolean found = false;
+        int i = 0;
+        while (!found && i < GamePanel.PemainUtama.getAllCard().getArrDeck().size()) {
             if (slug.equals(GamePanel.PemainUtama.getAllCard().get(i).getSlug()))
-                flag = true;
-        return flag;
+                found = true;
+            i++;
+        }
+        return found;
     }
     
     @Override
@@ -56,13 +60,8 @@ public class DeckState extends GameState {
             Scanner in = new Scanner(System.in);
             String opt;
             opt = in.nextLine();
-            //System.out.println(cekCard("fissure"));
             String[] arrOpt ;
             arrOpt = opt.split(" ");
-            //for (int i = 0; i<arrOpt.length;i++)
-            //    System.out.println(arrOpt[i]);
-            
-            
             if (null != arrOpt[0]) switch (arrOpt[0]) {
             case "list":
                 if ("All".equals(arrOpt[1])) {
@@ -72,8 +71,10 @@ public class DeckState extends GameState {
                 }
                 break;
             case "add":
-                if ((cekCard(arrOpt[1]))&&(!GamePanel.PemainUtama.isDoubledCard())) {
-                    GamePanel.PemainUtama.getDeck().addToDeck(ShopState.allCard.getBySlug(arrOpt[1]));
+                if (cekCard(arrOpt[1])) {
+                    Card card = ShopState.allCard.getBySlug(arrOpt[1]);
+                    if (!GamePanel.PemainUtama.getDeck().getArrDeck().contains(opt))
+                        GamePanel.PemainUtama.getDeck().addToDeck(ShopState.allCard.getBySlug(arrOpt[1]));
                 } else {
                     System.out.println("Not Found or card already doubled");
                 }
