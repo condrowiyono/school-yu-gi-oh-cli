@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.terserah.yugi.Entities;
 
 import java.util.ArrayList;
@@ -20,7 +15,7 @@ public abstract class Player {
    //Field for Dueling Purpose
    private Field FIELD;
    private int lp;
-   private boolean AddMonsterOption = true;
+   private boolean AddMonsterOption ; 
 
    public Player(String name) {
        this.NAME = name;
@@ -29,6 +24,7 @@ public abstract class Player {
        this.PLAYERDECK = new Deck();
        this.FIELD = new Field();
        this.lp = 500;
+       this.AddMonsterOption = true;
    }
    
    public Player(String name, int x, int y) {
@@ -38,6 +34,7 @@ public abstract class Player {
        this.POSISI = newPos;
        this.FIELD = new Field();
        this.lp = 500;
+       this.AddMonsterOption = true;
    }
    public Player(String name, int x, int y, Deck deck) {
        this.NAME = name;
@@ -47,6 +44,7 @@ public abstract class Player {
        this.PLAYERDECK = deck;
        this.FIELD = new Field();
        this.lp = 500;
+       this.AddMonsterOption = true;
    }
    
    public int getLP() {
@@ -72,7 +70,7 @@ public abstract class Player {
    public Deck getDeck() {
        return this.PLAYERDECK;
    }
-   public void setDeck(Deck deck) {
+   public void setPlayerDeck(Deck deck) {
        this.PLAYERDECK = deck;
    }
    
@@ -80,26 +78,16 @@ public abstract class Player {
         return ((this.PLAYERDECK.getSize()<10) || 
                 (this.PLAYERDECK.getSize()>15));
    }
-   
-    public boolean isDoubledCard() {
-        boolean flag = false; 
-        for (int i = 0; i < this.PLAYERDECK.getSize(); i++) { 
-            for (int j = i + 1 ; j < this.PLAYERDECK.getSize(); j++) { 
-                if (this.PLAYERDECK.get(i).equals(this.PLAYERDECK.get(j))) { 
-                    flag =  true;
-                } 
-            }  
-        }
-        return flag;
-    }
     
     public Field getField() {
         return this.FIELD;
     }
     
     public void resetField() {
+        this.AddMonsterOption = true;
         this.FIELD = new Field();
     }
+
     public  boolean isAddMonsterOption() {
         return AddMonsterOption;
     }
@@ -109,7 +97,6 @@ public abstract class Player {
         //astract method for dueling
     public boolean summonMonster(Monster monster) {
         boolean flag = false;
-        
         if (!this.isAddMonsterOption())
             System.out.println("Another summon occur");
         else if (this.getField().getMonsterArea().size() >= 3 ) {
@@ -121,7 +108,6 @@ public abstract class Player {
             this.getField().addMonsterToField(monster, Mode.ATTACK, false); 
             this.setAddMonsterOption(false);
             flag =  true;
-
         }
         return flag;
     }
@@ -249,6 +235,7 @@ public abstract class Player {
                 && Card.getBoard().getWinner()==null
                 && monster.isAttackingOption()) {
             monster.attack(opp);
+            //Card.getActiveField().actionMonsterEffect(opp, monster);
             monster.setAttackingOption(false);
             Card.getBoard().isAnyWinner();
             flag = true;

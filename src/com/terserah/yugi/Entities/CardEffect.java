@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.terserah.yugi.Entities;
 
 import java.util.ArrayList;
@@ -17,7 +12,9 @@ public class CardEffect {
     public static void actionMonsterEffect(Monster monster, Monster opp) {
         switch (monster.getSlug()) {
             case "hane-hane" :
+                if (monster.getMode()==Mode.DEFENSE)
                 System.out.println("Hane - hane activated");
+                
                 break;
             case "man-eaterbug":
                 System.out.println("man eater bug ativated");

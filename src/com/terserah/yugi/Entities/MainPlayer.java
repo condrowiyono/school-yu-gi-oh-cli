@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.terserah.yugi.Entities;
 
 import java.text.SimpleDateFormat;
@@ -60,12 +55,8 @@ public class MainPlayer extends Player{
         Date date = new Date(); 
         SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd HH:MM");
         return dt1.format(date);
-
     }
     public void setLastPlayed() {
         this.lastPlayed = this.getToday();
     }
-
- 
-    
 }

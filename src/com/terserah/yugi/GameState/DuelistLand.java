@@ -6,6 +6,8 @@
 package com.terserah.yugi.GameState;
 
 import com.terserah.yugi.Entities.Duelist;
+import com.terserah.yugi.Entities.Player;
+import static com.terserah.yugi.GameState.DuelState.ingame;
 import com.terserah.yugi.Manager.GameStateManager;
 import java.util.Scanner;
 import com.terserah.yugi.Main.GamePanel;
@@ -22,7 +24,7 @@ public class DuelistLand extends GameState {
     private static Duelist curDuelist ;
     
     //Array Map
-    private String[][] arrMap;
+    private static String[][] arrMap;
     
     public DuelistLand(GameStateManager gsm){
         super(gsm);
@@ -31,7 +33,6 @@ public class DuelistLand extends GameState {
     public static Duelist getCurDuelist() {
         return DuelistLand.curDuelist;
     }
-    
     public void makeMap() {
     arrMap =  new String[][] {
             {" ", " ", " ", " " , " ", " ", " ", " ", " ", " " },
@@ -51,6 +52,7 @@ public class DuelistLand extends GameState {
             int y = DuelistLand.arrDuelist.get(a).getPosisi().getY();
             arrMap[x-1][y-1] = "D";
         }
+        
         //shop
         arrMap[2][2] = "S";
         arrMap[9][8] = "S";
@@ -79,15 +81,19 @@ public class DuelistLand extends GameState {
     public void draw() {
         printMap();
         handleInput();
-        //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void handleInput() {
-        //To change body of generated methods, choose Tools | Templates.
         if (meetShop()) {
             gsm.setState(GameStateManager.SHOP);
         } else if (meetDuelist()) {
+            System.out.println(DuelistLand.getCurDuelist().getDeck().getSize());
+            Duelist opp = (Duelist) DuelistLand.getCurDuelist();
+            Player act = GamePanel.PemainUtama;
+            System.out.println(GamePanel.PemainUtama.getDeck().getSize());
+            DuelState.ingame = new Board(act, opp);
             gsm.setState(GameStateManager.DUEL);
         } else
         {

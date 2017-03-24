@@ -81,6 +81,10 @@ public class Monster extends Card{
 	public Mode getMode() {
 		return this.mode;
 	}
+        @Override
+        public String getJenis() {
+            return this.getClass().getSimpleName();
+        }
 
 	public void summon() {
 		this.setLoc(Location.FIELD);
@@ -175,20 +179,7 @@ public class Monster extends Card{
             Card.DecreaseLPOpp(this.ATK);
                 
 	}
-
-	public void showDetail() {
-		System.out.println("Monster name	    : "+getName());
-		System.out.println("Monster ATK		    : "+getATK());
-		System.out.println("Monster DEF		    :"+getDEF());
-		System.out.println("Monster Level	    :"+getLevel());
-		System.out.println("Monster Element	    :"+getElemen());
-		System.out.println("Monster Type	    :"+getType());
-	}
-
-        @Override
-        public String getJenis() {
-            return this.getClass().getSimpleName();
-        }
+        
 }
 
 

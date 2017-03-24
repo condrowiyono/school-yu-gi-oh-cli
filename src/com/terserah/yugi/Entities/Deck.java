@@ -12,19 +12,21 @@ package com.terserah.yugi.Entities;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import com.terserah.yugi.GameState.*;
+import com.terserah.yugi.GameState.ShopState;
 
 public class Deck {
-    private ArrayList<Card> deck = new ArrayList<Card>();
+    private ArrayList<Card> deck;
     public final static int MAX_DECK_SIZE = 30;
     public final static int MIN_DECK_SIZE = 20;
     int numCardsRemaining; 
 
     public Deck(){
+        this.deck = new ArrayList<Card>();
         numCardsRemaining = 0;
     }
 
     public Deck(ArrayList<Card> initialDeck){
+        this.deck = new ArrayList<Card>();
         for(int i = 0; i < initialDeck.size(); i++){
             deck.add(initialDeck.get(i));
         }
@@ -37,32 +39,16 @@ public class Deck {
     }
     private void shuffle(){
         Collections.shuffle(deck);
-        /*
-        ArrayList<Card> tempDeck = new ArrayList<Card>();
-        Random random = new Random();
-        while(deck.size() > 0){
-            int cardToRemove = random.nextInt(deck.size());
-            Card tempCard = deck.get(cardToRemove);
-            deck.remove(cardToRemove);
-            tempDeck.add(tempCard);
-        }
-        while(tempDeck.size() > 0){
-            Card tempCard = tempDeck.get(0);
-            tempDeck.remove(0);
-            deck.add(tempCard);
-        }
-        */
     }
 
-    public Card draw(){
-        Card toDraw = deck.get(0);
-        deck.remove(0);
-        return toDraw;
+    public Card drawOneCard() {
+        return deck.remove(deck.size() - 1);
     }
+    
     public ArrayList<Card> drawNCards(int n) {
         ArrayList<Card> res = new ArrayList<Card>();
         for (int i=1;i<=n;i++) {
-            res.add(draw());
+            res.add(drawOneCard());
         }
         return res;
     }
@@ -151,6 +137,9 @@ public class Deck {
             }
         }
         return new Deck(arrCard);
+    }
+    public void clear() {
+        deck.clear();
     }
 }
 

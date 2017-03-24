@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.terserah.yugi.Entities;
 
 import java.util.ArrayList;
@@ -12,9 +7,6 @@ import java.util.ArrayList;
  * @author muhfai
  */
 public class Field{
-        private static final int maxMonster = 3;
-        private static final int maxSpellTrap = 3;
-        
         private ArrayList<Monster> MONSTER ;
         private ArrayList<Card> SPELLTRAP ;
         private ArrayList<Card> GRAVEYARD;
@@ -31,7 +23,7 @@ public class Field{
             this.phase = Phase.MAIN1;
         }
         
-        public void setDeck(Deck deck) {
+        public void setFieldDeck(Deck deck) {
             this.DECK = deck;
         }
         
@@ -59,6 +51,85 @@ public class Field{
             return DECK;
         }
         
+        public void actionMonsterEffect(Monster monster, Monster opp) {
+             switch (monster.getSlug()) {
+                 case "hane-hane" :
+                     if (monster.getMode()==Mode.DEFENSE
+                         && this.MONSTER.contains(opp))
+                     {
+                         this.MONSTER.remove(opp);
+                         if (this.HAND.size()<5) 
+                         { 
+                             opp.setLoc(Location.HAND);
+                             this.HAND.add(opp);
+                         } else 
+                         {
+                             opp.setLoc(Location.GRAVEYARD);
+                             this.GRAVEYARD.add(opp);
+                         }
+                         System.out.println("Hane - hane activated");
+                     }
+                     break;
+                 case "man-eaterbug":
+                     if (monster.getMode()==Mode.DEFENSE
+                         && this.MONSTER.contains(opp))
+                     {
+                         this.MONSTER.remove(opp);
+                         {
+                             opp.setLoc(Location.GRAVEYARD);
+                             this.GRAVEYARD.add(opp);
+                             System.out.println("man eater bug ativated");
+                         }   
+                     }
+                     break;
+                 default :
+                     break;
+             }
+         }
+
+         //aksi effect di kartu spell
+         public void actionSpell(Spell spell, ArrayList<Monster> opps) {
+             switch (spell.getSlug()) {
+                 case "fissure":
+                     if (opps.size()>0) {
+                        
+                     }
+                     break;
+                 case "stopdefense" :
+                     System.out.println("Sto defense activated");
+                     break;
+                 default :
+                     break;
+
+             }
+         }
+
+         public  void actionTrap(Trap trap, Monster monster ) {
+             switch (trap.getSlug()) {
+                 case "negateattack":
+                     System.out.println("Negate attack activated");
+                     break;
+                 case "traphole" :
+                     System.out.println("traphole activated");
+                     break;
+                 default :
+                     break;
+
+             }          
+         }
+
+         //untuk mirror force
+         public  void actionTrap(Trap trap, ArrayList<Monster> monster) {
+             switch (trap.getSlug()) {
+                 case "mirrorforce":
+                     System.out.println("mirror force");
+                     break;
+                 default :
+                     break;
+
+             }       
+         }
+    
         public void addMonsterToField(Monster monster, Mode m, boolean hidden) {
             Location  loc = monster.getLoc();
             if (loc==Location.HAND)
@@ -76,8 +147,8 @@ public class Field{
         }
         
         public void removeMonsterToGraveyard(ArrayList<Monster> tribute) {
-            for (int i = 0 ; i < MONSTER.size();i++) 
-                removeMonsterToGraveyard(MONSTER.get(i));
+            for (int i = 0 ; i < tribute.size();i++) 
+                removeMonsterToGraveyard(tribute.get(i));
         }
         
         public void removeMonsterToGraveyard(Monster monster) {
@@ -89,7 +160,7 @@ public class Field{
         }
         
         public void addSpellToField(Spell spell, Monster monster, boolean hidden) {
-            if (this.SPELLTRAP.size() < this.maxSpellTrap) {
+            if (this.SPELLTRAP.size() < 3) {
                 spell.setHidden(hidden);
                 spell.setLoc(Location.FIELD);
                 HAND.remove(spell);
@@ -128,7 +199,7 @@ public class Field{
         }
         
         public void addTrapToField(Trap trap, Monster monster, boolean hidden) {
-            if (this.SPELLTRAP.size() < this.maxSpellTrap) {
+            if (this.SPELLTRAP.size() < 3) {
                 trap.setHidden(hidden);
                 trap.setLoc(Location.FIELD);
                 HAND.remove(trap);
@@ -167,7 +238,7 @@ public class Field{
         }    
         
         public void addCardsToHand() {
-            Card card = this.DECK.draw();
+            Card card = this.DECK.drawOneCard();
             card.setLoc(Location.HAND);
             this.HAND.add(card);
         }
@@ -189,7 +260,13 @@ public class Field{
             }
             return this.HAND.size();
         }
-        
+        public void removeHand(Card card) {
+            if (this.HAND.contains(card)) {
+                this.HAND.remove(card);
+                card.setLoc(Location.GRAVEYARD);
+                this.GRAVEYARD.add(card);
+            }
+        }        
         
         public void clearAll() {
             for (int i=0; i< this.MONSTER.size();i++){
@@ -205,61 +282,4 @@ public class Field{
 				&& Card.getActiveField() == this && Card.getBoard().getWinner() == null);
 
 	}
-            
-        //spell dan trap
-        //tambahkan monster ke field
-        //public void addMonsterToField(Monster monster, )
-        
-	/*
-        private Card[] arena;
-	private int size;
-	
-	public Field(int size) {
-		arena = new Card[size];
-		this.setSize(size);
-	}
-	
-	public void setSize(int s) {
-		this.size = s;
-	}
-	
-	public int getSize() {
-		return size;
-	}
-	
-	public Card getACard(int i) {
-		return this.arena[i];
-	}
-	
-	public void setACard(int idx, Card c) {
-		this.arena[idx] = c;
-	}
-	
-	public void add(Card c) {
-		int i = 0;
-		while ((this.arena[i] != null) && (i<size)){
-			i++;
-		}
-		if (this.arena[i] == null) {
-			this.arena[i] = c;
-		}
-	}
-	
-	public void move(int idx, Field f) {
-		Card temp = this.arena[idx];
-		this.arena[idx] = null;
-		f.add(temp);
-	}
-	
-	public void reset() {
-		int i;
-		for (i=0; i<size; i++) {
-			this.arena[i] = null;
-		}
-	}
-    */
-
-
-
-
 }

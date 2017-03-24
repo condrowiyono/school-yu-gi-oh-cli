@@ -24,7 +24,7 @@ public class DeckState extends GameState {
         if (deck.getSize()>0) {
             int k = 1;
             for (int i = 0; i < deck.getSize();i++) {
-              System.out.println(deck.get(i).getSlug()+ "\t \t" + deck.get(i).getName());
+              System.out.format("%1$-20s : %s \n", deck.get(i).getSlug(),deck.get(i).getName());
               k++;
             }
         } else

@@ -5,7 +5,6 @@
  */
 package com.terserah.yugi.Entities;
 
-import java.util.*;
 /**
  *
  * @author condro

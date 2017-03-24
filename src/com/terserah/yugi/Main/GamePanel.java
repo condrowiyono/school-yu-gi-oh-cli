@@ -18,7 +18,7 @@ public class GamePanel implements Runnable {
                 
                 public static void createPlayer(String name){
                     GamePanel.PemainUtama = new MainPlayer(name, Deck.getRandCard(15));
-                    GamePanel.PemainUtama.setDeck(Deck.getRandCard(11));
+                    GamePanel.PemainUtama.setPlayerDeck(Deck.getRandCard(11));
                 }
                 
                 public static MainPlayer getMainPlayer() {

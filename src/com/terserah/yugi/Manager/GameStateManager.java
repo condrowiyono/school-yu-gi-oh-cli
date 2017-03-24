@@ -68,7 +68,7 @@ public class GameStateManager {
                         gameStates[i].draw();
                         break; 
                     case WIN:
-                        gameStates[i] = new SaveManagerState(this);
+                        gameStates[i] = new WinState(this);
                         gameStates[i].draw();
                         break; 
                     default:

@@ -1,9 +1,7 @@
 package com.terserah.yugi.GameState;
 
-import com.terserah.yugi.Main.Game;
 import com.terserah.yugi.Main.GamePanel;
 import com.terserah.yugi.Manager.GameStateManager;
-import com.terserah.yugi.Manager.JSONManager;
 import java.util.Scanner;
 
 public class IntroState extends GameState {
@@ -51,9 +49,7 @@ public class IntroState extends GameState {
                     case "E":
                         System.exit(0);
                     default :
-                        break;
-                
+                        break;       
                 }
         }
-
 }

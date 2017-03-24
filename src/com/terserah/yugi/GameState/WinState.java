@@ -5,6 +5,7 @@
  */
 package com.terserah.yugi.GameState;
 
+import com.terserah.yugi.Entities.Duelist;
 import com.terserah.yugi.Main.GamePanel;
 import com.terserah.yugi.Manager.GameStateManager;
 import java.util.Scanner;
@@ -22,6 +23,9 @@ public class WinState extends GameState{
     @Override
     public void draw() {
         System.out.println("Selamat " + DuelState.ingame.getWinner().getName());
+        System.out.println("Deck " + DuelState.ingame.getWinner().getDeck().getSize());
+        System.out.println("Deck Field " + DuelState.ingame.getWinner().getField().getDeck().getSize());
+        handleInput();
     }
 
     @Override
@@ -33,6 +37,7 @@ public class WinState extends GameState{
             switch (opt) {
                 case "b":
                 case "back" :
+                    DuelistLand.arrDuelist.remove((Duelist) DuelState.ingame.getLoser());
                     GamePanel.getMainPlayer().setPosisi(GamePanel.getMainPlayer().getPosisi().getX(),GamePanel.getMainPlayer().getPosisi().getY()+1);
                     gsm.setState(GameStateManager.DUELISTLAND);
                     break;
