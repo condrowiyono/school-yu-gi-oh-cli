@@ -23,7 +23,7 @@ public class WinState extends GameState{
     @Override
     public void draw() {
         System.out.println("Selamat " + DuelState.ingame.getWinner().getName());
-        System.out.println("Deck " + DuelState.ingame.getWinner().getDeck().getSize());
+        System.out.println("Deck " + DuelState.ingame.getWinner().getLP());
         System.out.println("Deck Field " + DuelState.ingame.getWinner().getField().getDeck().getSize());
         handleInput();
     }
@@ -37,7 +37,11 @@ public class WinState extends GameState{
             switch (opt) {
                 case "b":
                 case "back" :
-                    DuelistLand.arrDuelist.remove((Duelist) DuelState.ingame.getLoser());
+                    if (!DuelState.ingame.getLoser().equals(GamePanel.PemainUtama))
+                    {
+                        DuelistLand.arrDuelist.remove((Duelist) DuelState.ingame.getLoser());
+                        GamePanel.PemainUtama.setMONEY(GamePanel.PemainUtama.getMONEY()+100);
+                    }
                     GamePanel.getMainPlayer().setPosisi(GamePanel.getMainPlayer().getPosisi().getX(),GamePanel.getMainPlayer().getPosisi().getY()+1);
                     gsm.setState(GameStateManager.DUELISTLAND);
                     break;

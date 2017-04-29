@@ -43,8 +43,8 @@ public class MenuState extends GameState {
                     System.out.println("Posisi = " + GamePanel.getMainPlayer().getPosisi().getX() + "," + GamePanel.getMainPlayer().getPosisi().getY());
                     System.out.println("List Kartu = ");
                     for (int i = 0 ; i < GamePanel.PemainUtama.getAllCard().getSize(); i++ )
-                        System.out.println(GamePanel.PemainUtama.getAllCard().get(i).getSlug()
-                                            + "\t \t" + GamePanel.PemainUtama.getAllCard().get(i).getName());
+                        System.out.format("%1$-20s : %s \n", GamePanel.PemainUtama.getAllCard().get(i).getSlug(),
+                                GamePanel.PemainUtama.getAllCard().get(i).getName());
                     break;
                 case "s":
                 case "save":

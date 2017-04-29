@@ -31,7 +31,10 @@ public class LoadState extends GameState {
     }
     private void printLoadFile() {
         for (int i = 0; i< GamePanel.semuaPemain.size();i++ )
-            System.out.println(i+ "\t" + GamePanel.semuaPemain.get(i).getName());
+            System.out.format("%2d %-20s : %s \n",
+                    i,
+                    GamePanel.semuaPemain.get(i).getName(),
+                    GamePanel.semuaPemain.get(i).getLastPlayed());
     }
     
     private boolean cekLoadFile(String id) {

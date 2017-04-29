@@ -167,7 +167,7 @@ public class Monster extends Card{
                         m.setHidden(false);
                     } else {
                         Card.getActiveField().removeMonsterToGraveyard(this);
-                        Card.DecreaseLPOpp((m.getATK() - this.getATK()));
+                        Card.DecreaseLPActive((m.getATK() - this.getATK()));
                     }
             } else if (m.mode != Mode.DEFENSE) {
                 Card.getOppField().removeMonsterToGraveyard(m);

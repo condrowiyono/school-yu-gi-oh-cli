@@ -39,10 +39,9 @@ public class ShopState extends GameState {
     public void printCard(Deck deck) {
         int i;
         int k = 1;
-        Deck monster = deck.getbyJenis("Monster");
+        Deck monster = deck;
         for (i = 0; i < monster.getSize();i++) {
-          Monster mm = (Monster) monster.get(i);
-          System.out.println(k+": " + mm.getLevel() + ": "+monster.get(i).getName());
+          System.out.println(k+": "+monster.get(i).getName());
           k++;
         }
     }
@@ -60,6 +59,9 @@ public class ShopState extends GameState {
                 case "1":
                 case "iya" :
                     int money = GamePanel.PemainUtama.getMONEY();
+                    if (money<100) {
+                        System.out.println("Uang kurang");
+                    } else {
                     GamePanel.PemainUtama.setMONEY(money-200);
                     for (int z =1; z <=3; z++){
                         Random rand = new Random();
@@ -130,7 +132,8 @@ public class ShopState extends GameState {
                             System.out.println(ShopState.allCard.get(15).getName());
                         }
                     }
-                    
+                    GamePanel.PemainUtama.setMONEY(money-100);
+                    }
                 case "0":
                 case "tidak":
                     GamePanel.getMainPlayer().setPosisi(GamePanel.getMainPlayer().getPosisi().getX(),GamePanel.getMainPlayer().getPosisi().getY()+1);

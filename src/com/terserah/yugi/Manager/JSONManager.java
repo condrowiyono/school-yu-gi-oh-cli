@@ -515,11 +515,8 @@ public class JSONManager {
     }
     
     public static void exportPlayer() {
-    
         JSONObject obj = new JSONObject();
-        //Tingkat 1
         obj.put("count", GamePanel.semuaPemain.size());
-        //Tingkat 1,2
         JSONArray duelistmember = new JSONArray();
         
         //

@@ -1,5 +1,6 @@
 package com.terserah.yugi.Entities;
 
+import com.terserah.yugi.GameState.ShopState;
 import java.util.ArrayList;
 
 /**
@@ -50,85 +51,6 @@ public class Field{
         public Deck getDeck() {
             return DECK;
         }
-        
-        public void actionMonsterEffect(Monster monster, Monster opp) {
-             switch (monster.getSlug()) {
-                 case "hane-hane" :
-                     if (monster.getMode()==Mode.DEFENSE
-                         && this.MONSTER.contains(opp))
-                     {
-                         this.MONSTER.remove(opp);
-                         if (this.HAND.size()<5) 
-                         { 
-                             opp.setLoc(Location.HAND);
-                             this.HAND.add(opp);
-                         } else 
-                         {
-                             opp.setLoc(Location.GRAVEYARD);
-                             this.GRAVEYARD.add(opp);
-                         }
-                         System.out.println("Hane - hane activated");
-                     }
-                     break;
-                 case "man-eaterbug":
-                     if (monster.getMode()==Mode.DEFENSE
-                         && this.MONSTER.contains(opp))
-                     {
-                         this.MONSTER.remove(opp);
-                         {
-                             opp.setLoc(Location.GRAVEYARD);
-                             this.GRAVEYARD.add(opp);
-                             System.out.println("man eater bug ativated");
-                         }   
-                     }
-                     break;
-                 default :
-                     break;
-             }
-         }
-
-         //aksi effect di kartu spell
-         public void actionSpell(Spell spell, ArrayList<Monster> opps) {
-             switch (spell.getSlug()) {
-                 case "fissure":
-                     if (opps.size()>0) {
-                        
-                     }
-                     break;
-                 case "stopdefense" :
-                     System.out.println("Sto defense activated");
-                     break;
-                 default :
-                     break;
-
-             }
-         }
-
-         public  void actionTrap(Trap trap, Monster monster ) {
-             switch (trap.getSlug()) {
-                 case "negateattack":
-                     System.out.println("Negate attack activated");
-                     break;
-                 case "traphole" :
-                     System.out.println("traphole activated");
-                     break;
-                 default :
-                     break;
-
-             }          
-         }
-
-         //untuk mirror force
-         public  void actionTrap(Trap trap, ArrayList<Monster> monster) {
-             switch (trap.getSlug()) {
-                 case "mirrorforce":
-                     System.out.println("mirror force");
-                     break;
-                 default :
-                     break;
-
-             }       
-         }
     
         public void addMonsterToField(Monster monster, Mode m, boolean hidden) {
             Location  loc = monster.getLoc();
@@ -159,31 +81,32 @@ public class Field{
             }
         }
         
-        public void addSpellToField(Spell spell, Monster monster, boolean hidden) {
+        public void addSpellToField(Spell spell, boolean hidden) {
             if (this.SPELLTRAP.size() < 3) {
-                spell.setHidden(hidden);
                 spell.setLoc(Location.FIELD);
+                SPELLTRAP.add(spell);
                 HAND.remove(spell);
-                if (!hidden)
-                    activateSpell(spell, monster);
-                else
-                    spell.setHidden(true);
             }
         }
         
-        public void activateSpell(Spell spell, Monster monster){
+        public void activateSpell(Spell spell){
             if (this.SPELLTRAP.contains(spell) &&
                     this.getPhase() != Phase.BATTLE) {
                 
                 spell.setHidden(false);
-                CardEffect.actionSpell(spell, monster);
-                CardEffect.actionSpell(spell, this.MONSTER);
+                CardEffect.actionSpell(spell);
                 removeSpellToGraveyard(spell);
             }
         }
+ 
         
         public void removeSpellToGraveyard(Spell spell) {
-            if (this.SPELLTRAP.contains(spell)) {
+            //Equip spell
+            //should be getbyType= Equib, not implement yet
+            Spell equib = (Spell) ShopState.allCard.getBySlug("followind");
+            
+            if (this.SPELLTRAP.contains(equib)) { } 
+            else if (this.SPELLTRAP.contains(spell)) {
                 this.SPELLTRAP.remove(spell);
                 spell.setLoc(Location.GRAVEYARD);
                 this.GRAVEYARD.add(spell);
@@ -198,28 +121,15 @@ public class Field{
 		}            
         }
         
-        public void addTrapToField(Trap trap, Monster monster, boolean hidden) {
+        public void addTrapToField(Trap trap) {
             if (this.SPELLTRAP.size() < 3) {
-                trap.setHidden(hidden);
+                trap.setHidden(false);
+                SPELLTRAP.add(trap);
                 trap.setLoc(Location.FIELD);
                 HAND.remove(trap);
-                if (!hidden)
-                    activateTrap(trap, monster);
-                else
-                    trap.setHidden(true);
             }
         }
         
-        public void activateTrap(Trap trap, Monster monster){
-            if (this.SPELLTRAP.contains(trap) &&
-                    this.getPhase() != Phase.BATTLE) {
-                
-                trap.setHidden(false);
-                CardEffect.actionTrap(trap, monster);
-                CardEffect.actionTrap(trap, this.MONSTER);
-                removeTrapToGraveyard(trap);
-            }
-        }
         
         public void removeTrapToGraveyard(Trap trap) {
             if (this.SPELLTRAP.contains(trap)) {

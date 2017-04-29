@@ -7,7 +7,6 @@ package com.terserah.yugi.GameState;
 
 import com.terserah.yugi.Entities.Duelist;
 import com.terserah.yugi.Entities.Player;
-import static com.terserah.yugi.GameState.DuelState.ingame;
 import com.terserah.yugi.Manager.GameStateManager;
 import java.util.Scanner;
 import com.terserah.yugi.Main.GamePanel;
@@ -90,8 +89,14 @@ public class DuelistLand extends GameState {
             gsm.setState(GameStateManager.SHOP);
         } else if (meetDuelist()) {
             System.out.println(DuelistLand.getCurDuelist().getDeck().getSize());
-            Duelist opp = (Duelist) DuelistLand.getCurDuelist();
+            Duelist opp = (Duelist) new Duelist(
+                            DuelistLand.getCurDuelist().getName(),
+                            DuelistLand.getCurDuelist().getPosisi().getX(),
+                            DuelistLand.getCurDuelist().getPosisi().getY(),
+                            DuelistLand.getCurDuelist().getRank(),
+                            DuelistLand.getCurDuelist().getDeck());
             Player act = GamePanel.PemainUtama;
+            act.setLP(2000);
             System.out.println(GamePanel.PemainUtama.getDeck().getSize());
             DuelState.ingame = new Board(act, opp);
             gsm.setState(GameStateManager.DUEL);

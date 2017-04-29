@@ -83,33 +83,34 @@ public abstract class Card{
 	public String getSlug() {
 		return this.slug;
 	}
-        public abstract String getJenis() ;
+    
+    public abstract String getJenis() ;
         
-        public static void setBoard(Board b) {
+    public static void setBoard(Board b) {
 		board = b;
 	}
         
-        public static Board getBoard() {
-            return Card.board; 
+    public static Board getBoard() {
+        return Card.board; 
 	} 
         
-        public static Field getOppField() {
-            return board.getOppPlayer().getField();
-        }
+    public static Field getOppField() {
+        return board.getOppPlayer().getField();
+    }
         
-        public static Field getActiveField() {
-            return board.getActivePlayer().getField();
-        }
-        
-        public static void DecreaseLPActive(int n) {
-            Card.getBoard().getActivePlayer()
-                    .setLP(
-                    Card.getBoard().getActivePlayer().getLP()-n);
-        }
-        
-        public static void DecreaseLPOpp(int n) {
-            Card.getBoard().getOppPlayer()
-                    .setLP(
-                    Card.getBoard().getOppPlayer().getLP()-n);
-        }
+    public static Field getActiveField() {
+        return board.getActivePlayer().getField();
+    }
+    
+    public static void DecreaseLPActive(int n) {
+        Card.getBoard().getActivePlayer()
+                .setLP(
+                Card.getBoard().getActivePlayer().getLP()-n);
+    }
+    
+    public static void DecreaseLPOpp(int n) {
+        Card.getBoard().getOppPlayer()
+                .setLP(
+                Card.getBoard().getOppPlayer().getLP()-n);
+    }
 }

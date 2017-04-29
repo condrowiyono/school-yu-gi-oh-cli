@@ -12,6 +12,7 @@ public class Trap extends Card{
             super(name, description, loc, probability);
             this.hidden = false;
     }
+
     //setter getter
     public void setHidden(Boolean hidden) {
             this.hidden = hidden;

@@ -60,9 +60,9 @@ public class Board {
             if (activePlayer.getField().getHand().size()>5)
             {
                 Scanner in = new Scanner(System.in);
-                System.out.println("Remove card from hand " + activePlayer);
-                for (int i = 0; i< activePlayer.getField().getHand().size();i++)
-                    System.out.println(i + " " + activePlayer.getField().getHand().get(i).getName());
+                System.out.println("Remove card from hand " + activePlayer.getName());
+                for (int j = 0; j< activePlayer.getField().getHand().size()-1;j++)
+                    System.out.println(j + " " + activePlayer.getField().getHand().get(j).getName());
                 System.out.print("Card > ");
                 int i = Integer.parseInt(in.nextLine());
                 if (i<activePlayer.getField().getHand().size())
@@ -128,7 +128,6 @@ public class Board {
         this.loser = loser;
     }
     public Player getLoser() {
-        Card.getBoard().isAnyWinner();
         return loser;
     }
 }

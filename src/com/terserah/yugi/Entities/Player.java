@@ -1,5 +1,7 @@
 package com.terserah.yugi.Entities;
 
+import com.terserah.yugi.GameState.DuelState;
+import com.terserah.yugi.GameState.ShopState;
 import java.util.ArrayList;
 
 /**
@@ -23,7 +25,7 @@ public abstract class Player {
        this.POSISI = newPos;
        this.PLAYERDECK = new Deck();
        this.FIELD = new Field();
-       this.lp = 500;
+       this.lp = 2000;
        this.AddMonsterOption = true;
    }
    
@@ -33,7 +35,7 @@ public abstract class Player {
        this.PLAYERDECK = new Deck();
        this.POSISI = newPos;
        this.FIELD = new Field();
-       this.lp = 500;
+       this.lp = 2000;
        this.AddMonsterOption = true;
    }
    public Player(String name, int x, int y, Deck deck) {
@@ -43,7 +45,7 @@ public abstract class Player {
        this.POSISI = newPos;
        this.PLAYERDECK = deck;
        this.FIELD = new Field();
-       this.lp = 500;
+       this.lp = 2000;
        this.AddMonsterOption = true;
    }
    
@@ -106,6 +108,14 @@ public abstract class Player {
                 this.getField().getHand().contains((Monster) monster) &&
                 this.isAddMonsterOption() && monster.getLevel() < 5) {
             this.getField().addMonsterToField(monster, Mode.ATTACK, false); 
+            
+            if (CardEffect.actionTrapHole()) {
+                 Trap trap = (Trap) ShopState.allCard.getBySlug("traphole");
+                 DuelState.ingame.getOppPlayer().getField().removeMonsterToGraveyard(monster);
+                 DuelState.ingame.getOppPlayer().getField().removeTrapToGraveyard(trap);
+                 System.out.println("should be a trap");
+            }
+            System.out.println(CardEffect.actionTrapHole());
             this.setAddMonsterOption(false);
             flag =  true;
         }
@@ -168,12 +178,12 @@ public abstract class Player {
             System.out.println("No more room");
         else if (this.getField().CheckAddingCard() &&
                 this.getField().getHand().contains((Spell) spell)) {
-            this.getField().addSpellToField(spell, null, true);
+            this.getField().addSpellToField(spell,true);
             flag = true;
         } 
         return flag;
     }
-    public boolean activateSpell(Spell spell, Monster monster) {
+    public boolean activateSpell(Spell spell) {
         boolean flag = false;
         if (this.getField().getSpellTrapArea().size()>=3)
             System.out.println("No more room");
@@ -184,12 +194,9 @@ public abstract class Player {
                 && ((this.getField().getHand().contains((Spell) spell)
                 && this.getField().getSpellTrapArea().size()<5)
                 || this.getField().getSpellTrapArea().contains((Spell) spell))) {
-            if (spell.getLoc() == Location.HAND)
-                this.getField().addSpellToField(spell, monster, false);
-            else
-                this.getField().activateSpell(spell, monster);
-            flag = true;
-        } 
+                this.getField().activateSpell(spell);
+                flag = true;
+        }   
         return flag;
     }
    public boolean setTrap(Trap trap) {
@@ -198,27 +205,13 @@ public abstract class Player {
             System.out.println("No more room");
         else if (this.getField().CheckAddingCard() &&
                 this.getField().getHand().contains((Trap) trap)) {
-            this.getField().addTrapToField(trap, null, true);
+            this.getField().addTrapToField(trap);
             flag = true;
         } 
         return flag;
     }
     public boolean activateTrap(Trap trap, Monster monster) {
-        boolean flag = false;
-        if (this.getField().getSpellTrapArea().size()>=3)
-            System.out.println("No more room");
-        else if (Card.getBoard().getActivePlayer() == this
-                && Card.getBoard().getWinner() == null
-                && ((this.getField().getHand().contains((Trap) trap)
-                && this.getField().getSpellTrapArea().size()<5)
-                || this.getField().getSpellTrapArea().contains((Trap) trap))) {
-            if (trap.getLoc() == Location.HAND)
-                this.getField().addTrapToField(trap, monster, false);
-            else
-                this.getField().activateTrap(trap, monster);
-            flag = true;
-        } 
-        return flag;
+      return true;
     }
     
     //batle
@@ -235,7 +228,7 @@ public abstract class Player {
                 && Card.getBoard().getWinner()==null
                 && monster.isAttackingOption()) {
             monster.attack(opp);
-            //Card.getActiveField().actionMonsterEffect(opp, monster);
+            CardEffect.actionMonsterEffect(opp, monster);
             monster.setAttackingOption(false);
             Card.getBoard().isAnyWinner();
             flag = true;

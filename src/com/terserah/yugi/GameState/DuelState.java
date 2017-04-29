@@ -5,11 +5,14 @@
  */
 package com.terserah.yugi.GameState;
 
+import com.terserah.yugi.Entities.Ais;
 import com.terserah.yugi.Entities.Card;
 import com.terserah.yugi.Entities.Field;
 import com.terserah.yugi.Entities.Mode;
 import com.terserah.yugi.Entities.Monster;
 import com.terserah.yugi.Entities.Player;
+import com.terserah.yugi.Entities.Spell;
+import com.terserah.yugi.Entities.Trap;
 import com.terserah.yugi.Main.GamePanel;
 import com.terserah.yugi.Manager.GameStateManager;
 import java.util.ArrayList;
@@ -69,9 +72,6 @@ public class DuelState extends GameState {
                 System.out.format("[-] " );
             else if (Mode.ATTACK.equals(f2.getMonsterArea().get(i).getMode()))
                 System.out.format("[*] " );
-        }
-        for (Monster monsterArea : f2.getMonsterArea()) {
-            
         }
         for (int i=0; i<remaining;i++) {
             System.out.format("[ ] " );
@@ -150,8 +150,15 @@ public class DuelState extends GameState {
             System.out.println(ingame.getActivePlayer().getName()
                                 + " vs " 
                                 + ingame.getOppPlayer().getName());
-            printField(); 
+            
             handleInput();
+            if ((GamePanel.PemainUtama).equals(ingame.getOppPlayer())) {
+                printField(); 
+                Ais.init();
+                Ais.attack();
+                Ais.last();
+            }
+            printField(); 
         }
         if (null!=ingame.getWinner()) {
             gsm.setState(GameStateManager.WIN);
@@ -160,6 +167,7 @@ public class DuelState extends GameState {
 
     @Override
     public void handleInput() {
+        printField(); 
         Player actPlayer = ingame.getActivePlayer();
         Player oppPlayer = ingame.getOppPlayer();
         System.out.print (actPlayer.getName()+" "+ actPlayer.getField().getPhase()+ " >");
@@ -171,7 +179,9 @@ public class DuelState extends GameState {
         arrOpt = opt.split(" ");
         if (null != arrOpt[0]) switch (arrOpt[0]) {
         case "summon":
-            if (null==arrOpt[1]){}
+            if (arrOpt.length<=1){
+                System.out.println("Input Error");
+            break;}
             else { 
                 int i = Integer.parseInt(arrOpt[1]);
                 if (cekCard(actPlayer,arrOpt[1]) || (i<=actPlayer.getField().getHand().size())) {
@@ -183,8 +193,8 @@ public class DuelState extends GameState {
                         if (actPlayer.summonMonster(monster))
                             System.out.println("Monster summoned");   
                         else System.out.println("Error occur 1");
-                    else if (monster.getLevel() ==5 ||
-                             monster.getLevel() ==6 &&
+                    else if ((monster.getLevel() ==5 ||
+                             monster.getLevel() ==6) &&
                              actPlayer.getField().getMonsterArea().size()>0) {
                         ArrayList<Monster> monstertribute = new ArrayList<Monster>();
                         System.out.println("Tribute Monster");
@@ -260,7 +270,9 @@ public class DuelState extends GameState {
             break;
             }
         case "set":
-            if (null==arrOpt[1]){}
+            if (arrOpt.length<=1){
+                System.out.println("Input Error");
+            break;}
             else {
                 int i = Integer.parseInt(arrOpt[1]);
                 
@@ -274,35 +286,96 @@ public class DuelState extends GameState {
                 else System.out.println("Not monster");
                 }
             }
-            break;  
+            break;
+
         case "flip":
-            if (null==arrOpt[1]){}
+            if (arrOpt.length<=1){
+                System.out.println("Input Error");
+            break;}
             else {
                 int i = Integer.parseInt(arrOpt[1]);
-                monster = (Monster) actPlayer.getField().getMonsterArea().get(i);
-                if (i <=actPlayer.getField().getMonsterArea().size()) {
-                if ("Monster".equals(monster.getJenis())) 
-                    if (actPlayer.switchMonsterPosition(monster))
-                        System.out.println("monster flipped");   
-                    else 
-                        System.out.println("Error occur");
-                else System.out.println("Not monster");
+                if (i>actPlayer.getField().getMonsterArea().size()) {
+                    System.out.println("Salah input");
+                } else {
+                    monster = (Monster) actPlayer.getField().getMonsterArea().get(i);
+                    if (i <=actPlayer.getField().getMonsterArea().size()) {
+                    if ("Monster".equals(monster.getJenis())) 
+                        if (actPlayer.switchMonsterPosition(monster))
+                            System.out.println("monster flipped");   
+                        else 
+                            System.out.println("Error occur");
+                    else System.out.println("Not monster");
+                    }
                 }
             }
             break;  
+        case "place":
+            Spell spell;
+            if (arrOpt.length<=1){
+                System.out.println("Input Error");
+            break;}
+
+            else {
+                int i = Integer.parseInt(arrOpt[1]);
+                if (i <=actPlayer.getField().getHand().size()) {
+                    spell = (Spell) actPlayer.getField().getHand().get(i);
+                    if ("Spell".equals(spell.getJenis())) 
+                    if (actPlayer.setSpell(spell))
+                        System.out.println("spell placed");   
+                    else 
+                        System.out.println("Error occur");
+                else System.out.println("Not spell");
+                }
+            }
+            break;
+        case "trap":
+            Trap trap;
+            if (arrOpt.length<=1){
+                System.out.println("Input Error");
+            break;}
+
+            else {
+                int i = Integer.parseInt(arrOpt[1]);
+                if (i <=actPlayer.getField().getHand().size()) {
+                    trap = (Trap) actPlayer.getField().getHand().get(i);
+                    if ("Trap".equals(trap.getJenis())) 
+                    if (actPlayer.setTrap(trap))
+                        System.out.println("trap placed");   
+                    else 
+                        System.out.println("Error occur");
+                else System.out.println("Not a Trap");
+                }
+            }
+            break;
+        case "use":
+            if (arrOpt.length<=1){
+                System.out.println("Input Error");
+            break;}
+            else {
+                int i = Integer.parseInt(arrOpt[1]);
+                if (i <=actPlayer.getField().getSpellTrapArea().size()) {
+                    spell = (Spell) actPlayer.getField().getSpellTrapArea().get(i);
+                    if (actPlayer.activateSpell(spell))
+                        System.out.println("spell activated");   
+                    else 
+                        System.out.println("Error occur");
+               
+                }
+            }
+            break;
         case "endphase":
             ingame.getActivePlayer().endPhase();
             System.out.println("Fase : " + ingame.getActivePlayer().getField().getPhase());
             break; 
         case "endturn":
-            ingame.getActivePlayer().endTurn();
             System.out.println("Ganti Giliran ");
+            ingame.getActivePlayer().endTurn();
             break; 
         case "listname":
             printOppOnField();
             printNameOnField();
             break; 
-        //Later by removes
+        //Later be removed
         case "0":
         case "back":
             GamePanel.getMainPlayer().setPosisi(GamePanel.getMainPlayer().getPosisi().getX(),GamePanel.getMainPlayer().getPosisi().getY()+1);
